@@ -6,7 +6,7 @@ export default function Layout({ title, children, styleName }) {
 		<section className={clsx(styles.layout, styleName)}>
 			<figure></figure>
 
-			<div className={clsx(styles.content)}>
+			<div className={clsx(styles.content, styleName)}>
 				<h1>{title}</h1>
 				{children}
 			</div>
