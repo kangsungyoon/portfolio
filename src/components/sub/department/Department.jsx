@@ -42,11 +42,11 @@ export default function Department() {
 					);
 				})}
 			</div>
-			<div className={styles.membeBox}>
+			<div className={styles.memberBox}>
 				{Department.map((member, idx) => {
 					return (
 						<article key={idx}>
-							<div className='pic'>
+							<div className={styles.pic}>
 								<img src={`${path}/img/${member.pic}`} alt={member.name} />
 							</div>
 							<h2>{member.name}</h2>

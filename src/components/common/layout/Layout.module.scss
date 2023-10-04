@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Orbitron&family=Roboto:wght@100&display=swap');
+
 .layout {
 	width: 100%;
 
@@ -11,6 +13,11 @@
 		width: 80vw;
 		margin: 5vh auto;
 		min-height: 60vh;
-		border: 1px solid #ddd;
+
+		h1 {
+			font: normal 100px/1 'Nanum Myeongjo';
+			color: #555;
+			margin-bottom: 30px;
+		}
 	}
 }
