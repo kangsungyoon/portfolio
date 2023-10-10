@@ -6,11 +6,12 @@ import Masonry from 'react-masonry-component';
 export default function Gallery() {
 	const refInput = useRef(null);
 	const [Pics, setPics] = useState([]);
+	const [Loader, setLoader] = useState(true);
 	const my_id = '164021883@N04';
 
 	const fetchData = async (opt) => {
 		let url = '';
-		const api_key = 'df39eea7518a5a4528b7bc5488282b35';
+		const api_key = '2a1a0aebb34012a99c23e13b49175343';
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
@@ -43,61 +44,74 @@ export default function Gallery() {
 
 	return (
 		<Layout title={'Gallery'}>
-			<form
-				onSubmit={(e) => {
-					e.preventDefault();
-					if (refInput.current.value.trim() === '') {
-						return alert('검색어를 입력하세요.');
-					}
+			<div className='searchBox'>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						if (refInput.current.value.trim() === '') {
+							return alert('검색어를 입력하세요.');
+						}
 
-					fetchData({ type: 'search', tags: refInput.current.value });
-					refInput.current.value = '';
-				}}
-			>
-				<input ref={refInput} type='text' placeholder='검색어를 입력하세요' />
-				<button>검색</button>
-			</form>
-			<button onClick={() => fetchData({ type: 'user', id: my_id })}>My Gallery</button>
-			<button onClick={() => fetchData({ type: 'interest' })}>Interest Gallery</button>
-
-			<div className='picFrame'>
-				<Masonry
-					elementType={'div'}
-					options={{ transitionDuration: '0.5s' }}
-					disableImagesLoaded={false}
-					updateOnEachImageLoad={false}
+						fetchData({ type: 'search', tags: refInput.current.value });
+						refInput.current.value = '';
+					}}
 				>
-					{Pics.map((data, idx) => {
-						return (
-							<article key={idx}>
-								<div className='inner'>
-									<img
-										className='pic'
-										src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`}
-										alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
-									/>
-									<h2>{data.title}</h2>
-
-									<div className='profile'>
-										<img
-											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
-											alt={data.owner}
-											onError={(e) => {
-												//만약 사용자가 프로필 이미지를 올리지 않았을때 엑박이 뜨므로
-												//onError이벤트를 연결해서 대체이미지 출력
-												e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif');
-											}}
-										/>
-										<span onClick={() => fetchData({ type: 'user', id: data.owner })}>
-											{data.owner}
-										</span>
-									</div>
-								</div>
-							</article>
-						);
-					})}
-				</Masonry>
+					<input ref={refInput} type='text' placeholder='검색어를 입력하세요' />
+					<button>검색</button>
+				</form>
 			</div>
+
+			<div className='btnSet'>
+				<button onClick={() => fetchData({ type: 'user', id: my_id })}>My Gallery</button>
+				<button onClick={() => fetchData({ type: 'interest' })}>Interest Gallery</button>
+			</div>
+
+			{/* Loader가 true: 로딩바출력, Loader가 false: 갤러리 프레임 출력 */}
+			{Loader ? (
+				<img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='loading' />
+			) : (
+				<div className='picFrame'>
+					<Masonry
+						elementType={'div'}
+						options={{ transitionDuration: '0.5s' }}
+						disableImagesLoaded={false}
+						updateOnEachImageLoad={false}
+					>
+						{Pics.map((data, idx) => {
+							return (
+								<article key={idx}>
+									<div className='inner'>
+										<img
+											className='pic'
+											src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`}
+											alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
+										/>
+										<h2>{data.title}</h2>
+
+										<div className='profile'>
+											<img
+												src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
+												alt={data.owner}
+												onError={(e) => {
+													//만약 사용자가 프로필 이미지를 올리지 않았을때 엑박이 뜨므로
+													//onError이벤트를 연결해서 대체이미지 출력
+													e.target.setAttribute(
+														'src',
+														'https://www.flickr.com/images/buddyicon.gif'
+													);
+												}}
+											/>
+											<span onClick={() => fetchData({ type: 'user', id: data.owner })}>
+												{data.owner}
+											</span>
+										</div>
+									</div>
+								</article>
+							);
+						})}
+					</Masonry>
+				</div>
+			)}
 		</Layout>
 	);
 }
