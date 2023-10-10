@@ -6,22 +6,20 @@ import Masonry from 'react-masonry-component';
 export default function Gallery() {
 	const refFrame = useRef(null);
 	const refInput = useRef(null);
+	const refBtnSet = useRef(null);
 	const [Pics, setPics] = useState([]);
 	const [Loader, setLoader] = useState(true);
 	const my_id = '164021883@N04';
 
 	const fetchData = async (opt) => {
-		//이벤트 버튼 (interest gallery, my gallery 버튼 클릭할때마다)
-		//새롭게 데이터 fetching을 해야되므로 다시 로딩바 보이게 하고
-		//기존 frame은 안보이도록 on 클래스 제거
 		setLoader(true);
 		refFrame.current.classList.remove('on');
 		let url = '';
-		const api_key = 'df39eea7518a5a4528b7bc5488282b35';
+		const api_key = '2a1a0aebb34012a99c23e13b49175343';
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
-		const num = 500;
+		const num = 100;
 
 		//fetching함수 호출시 타입값이 있는 객체를 인수로 전달하면 해당 타입에 따라 호출 URL이 변경되고
 		//해당URL을 통해 받아지는 데이터로 달라짐
@@ -84,9 +82,28 @@ export default function Gallery() {
 				</form>
 			</div>
 
-			<div className='btnSet'>
-				<button onClick={() => fetchData({ type: 'user', id: my_id })}>My Gallery</button>
-				<button onClick={() => fetchData({ type: 'interest' })}>Interest Gallery</button>
+			<div className='btnSet' ref={refBtnSet}>
+				<button
+					className='on'
+					onClick={(e) => {
+						//각 버튼 클릭시 해당 버튼에 만약 on클래스가 있으면 이미 활성화 되어 있는 버튼이므로 return으로 종료해서
+						//fetchData함수 호출 방지
+						if (e.target.classList.contains('on')) return;
+						fetchData({ type: 'user', id: my_id });
+					}}
+				>
+					My Gallery
+				</button>
+				<button
+					onClick={(e) => {
+						//각 버튼 클릭시 해당 버튼에 만약 on클래스가 있으면 이미 활성화 되어 있는 버튼이므로 return으로 종료해서
+						//fetchData함수 호출 방지
+						if (e.target.classList.contains('on')) return;
+						fetchData({ type: 'interest' });
+					}}
+				>
+					Interest Gallery
+				</button>
 			</div>
 
 			{/* Loader가 true일때에만 로딩 이미지 출력 */}
