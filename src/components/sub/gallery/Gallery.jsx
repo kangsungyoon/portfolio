@@ -9,9 +9,13 @@ export default function Gallery() {
 	const refBtnSet = useRef(null);
 	const [Pics, setPics] = useState([]);
 	const [Loader, setLoader] = useState(true);
+	//대체이미지가 추가되었는지 아닌지를 확인하는 state
+	//Fix(true): 대체이미지 추가됨, Fix(false): 대체이미지 적용안됨
+	const [Fix, setFix] = useState(false);
 	const my_id = '164021883@N04';
 
 	const fetchData = async (opt) => {
+		let count = 0;
 		setLoader(true);
 		refFrame.current.classList.remove('on');
 		let url = '';
@@ -19,10 +23,8 @@ export default function Gallery() {
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
-		const num = 100;
+		const num = 10;
 
-		//fetching함수 호출시 타입값이 있는 객체를 인수로 전달하면 해당 타입에 따라 호출 URL이 변경되고
-		//해당URL을 통해 받아지는 데이터로 달라짐
 		if (opt.type === 'interest') {
 			url = `https://www.flickr.com/services/rest/?method=${method_interest}&api_key=${api_key}&per_page=${num}&nojsoncallback=1&format=json`;
 		}
@@ -39,21 +41,20 @@ export default function Gallery() {
 		if (json.photos.photo.length === 0) {
 			return alert('해당 검색어의 결과값이 없습니다.');
 		}
-		//실제 데이터가 state에 담기는 순간 가상돔이 생성되는 순간
 		setPics(json.photos.photo);
 
-		let count = 0;
 		const imgs = refFrame.current?.querySelectorAll('img');
+		console.log(imgs);
 
-		imgs.forEach((img, idx) => {
+		imgs.forEach((img) => {
 			img.onload = () => {
 				++count;
 				console.log('현재 로딩된 img갯수', count);
-				//interset gallery에서 특정 사용자 갤러리 호출시 이미 interest화면에서 2개의 이미지 이미 캐싱처리 되어있기때문에
-				// 전체 이미지 갯수에서 -2를 뺴줘야지 무한로딩 오류 해결
-				if (count === imgs.length - 2) {
+				//이미지 소스 렌더링 유무 카운트할때
+				//Fix값이 true이면 대체 이미지가 이미 캐싱되어 있는 상태이므로 profile이미지를 제외한 이미지 갯수와 비교
+				//Fix값이 false이면 대체 이미지가 캐싱되어있지 않는 상태이므로 prfoile이미지까지 포함해서 갯수 비교
+				if (count === (Fix ? imgs.length / 2 - 1 : imgs.length - 2)) {
 					console.log('모든 이미지 소스 렌더링 완료!');
-					//모든 소스이미지라 렌더링완료되면 Loader값을 false로 바꿔서 로딩이미지 제거
 					setLoader(false);
 					refFrame.current.classList.add('on');
 				}
@@ -88,11 +89,8 @@ export default function Gallery() {
 				<button
 					className='on'
 					onClick={(e) => {
-						//각 버튼 클릭시 해당 버튼에 만약 on클래스가 있으면 이미 활성화 되어 있는 버튼이므로 return으로 종료해서
-						//fetchData함수 호출 방지
 						if (e.target.classList.contains('on')) return;
 
-						//클릭한 버튼요소에 on이없으면 해당 버튼활성화
 						const btns = refBtnSet.current.querySelectorAll('button');
 						btns.forEach((btn) => btn.classList.remove('on'));
 						e.target.classList.add('on');
@@ -104,11 +102,8 @@ export default function Gallery() {
 				</button>
 				<button
 					onClick={(e) => {
-						//각 버튼 클릭시 해당 버튼에 만약 on클래스가 있으면 이미 활성화 되어 있는 버튼이므로 return으로 종료해서
-						//fetchData함수 호출 방지
 						if (e.target.classList.contains('on')) return;
 
-						//클릭한 버튼요소에 on이없으면 해당 버튼활성화
 						const btns = refBtnSet.current.querySelectorAll('button');
 						btns.forEach((btn) => btn.classList.remove('on'));
 						e.target.classList.add('on');
@@ -120,7 +115,6 @@ export default function Gallery() {
 				</button>
 			</div>
 
-			{/* Loader가 true일때에만 로딩 이미지 출력 */}
 			{Loader && (
 				<img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='loading' />
 			)}
@@ -144,15 +138,22 @@ export default function Gallery() {
 
 									<div className='profile'>
 										<img
-											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
+											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner2}.jpg`}
 											alt={data.owner}
 											onError={(e) => {
-												//만약 사용자가 프로필 이미지를 올리지 않았을때 엑박이 뜨므로
-												//onError이벤트를 연결해서 대체이미지 출력
+												//만약 프로필 이미지에서 에러가 발생하면 대체이미지를 추가
+												//이때 대체이미지는 같은 이미지를 계속 호출하기 때문에 이미 캐싱처리 되어 있어서
+												//다음번 렌더링 타이임에 count값에 포함이 안됨
+												//따라서 대체이미지 추가 유무를 Fix라는 state에 담아서 구분
+												setFix(true);
 												e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif');
 											}}
 										/>
-										<span onClick={() => fetchData({ type: 'user', id: data.owner })}>
+										<span
+											onClick={() => {
+												fetchData({ type: 'user', id: data.owner });
+											}}
+										>
 											{data.owner}
 										</span>
 									</div>
