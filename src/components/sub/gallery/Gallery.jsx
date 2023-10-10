@@ -9,7 +9,7 @@ export default function Gallery() {
 
 	const fetchData = async (opt) => {
 		let url = '';
-		const api_key = 'df39eea7518a5a4528b7bc5488282b35 ';
+		const api_key = 'df39eea7518a5a4528b7bc5488282b35';
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 
@@ -39,8 +39,8 @@ export default function Gallery() {
 
 	return (
 		<Layout title={'Gallery'}>
-			<button>My Gallery</button>
-			<button>Interest Gallery</button>
+			<button onClick={() => fetchData({ type: 'user', id: my_id })}>My Gallery</button>
+			<button onClick={() => fetchData({ type: 'interest' })}>Interest Gallery</button>
 
 			<div className='picFrame'>
 				<Masonry
@@ -65,7 +65,9 @@ export default function Gallery() {
 											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
 											alt={data.owner}
 										/>
-										<span>{data.owner}</span>
+										<span onClick={(e) => fetchData({ type: 'user', id: data.owner })}>
+											{data.owner}
+										</span>
 									</div>
 								</div>
 							</article>
