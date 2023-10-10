@@ -49,7 +49,9 @@ export default function Gallery() {
 			img.onload = () => {
 				++count;
 				console.log('현재 로딩된 img갯수', count);
-				if (count === imgs.length) {
+				//interset gallery에서 특정 사용자 갤러리 호출시 이미 interest화면에서 2개의 이미지 이미 캐싱처리 되어있기때문에
+				// 전체 이미지 갯수에서 -2를 뺴줘야지 무한로딩 오류 해결
+				if (count === imgs.length - 2) {
 					console.log('모든 이미지 소스 렌더링 완료!');
 					//모든 소스이미지라 렌더링완료되면 Loader값을 false로 바꿔서 로딩이미지 제거
 					setLoader(false);
