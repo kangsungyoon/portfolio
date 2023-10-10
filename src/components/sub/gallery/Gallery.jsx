@@ -7,7 +7,7 @@ export default function Gallery() {
 	const refFrame = useRef(null);
 	const refInput = useRef(null);
 	const [Pics, setPics] = useState([]);
-	const [Loader, setLoader] = useState(false);
+	const [Loader, setLoader] = useState(true);
 	const my_id = '164021883@N04';
 
 	const fetchData = async (opt) => {
@@ -48,6 +48,8 @@ export default function Gallery() {
 				console.log('현재 로딩된 img갯수', count);
 				if (count === imgs.length) {
 					console.log('모든 이미지 소스 렌더링 완료!');
+					//모든 소스이미지라 렌더링완료되면 Loader값을 false로 바꿔서 로딩이미지 제거
+					setLoader(false);
 				}
 			};
 		});
@@ -81,52 +83,48 @@ export default function Gallery() {
 				<button onClick={() => fetchData({ type: 'interest' })}>Interest Gallery</button>
 			</div>
 
-			{/* Loader가 true: 로딩바출력, Loader가 false: 갤러리 프레임 출력 */}
-			{Loader ? (
+			{/* Loader가 true일때에만 로딩 이미지 출력 */}
+			{Loader && (
 				<img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='loading' />
-			) : (
-				<div className='picFrame' ref={refFrame}>
-					<Masonry
-						elementType={'div'}
-						options={{ transitionDuration: '0.5s' }}
-						disableImagesLoaded={false}
-						updateOnEachImageLoad={false}
-					>
-						{Pics.map((data, idx) => {
-							return (
-								<article key={idx}>
-									<div className='inner'>
-										<img
-											className='pic'
-											src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`}
-											alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
-										/>
-										<h2>{data.title}</h2>
-
-										<div className='profile'>
-											<img
-												src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
-												alt={data.owner}
-												onError={(e) => {
-													//만약 사용자가 프로필 이미지를 올리지 않았을때 엑박이 뜨므로
-													//onError이벤트를 연결해서 대체이미지 출력
-													e.target.setAttribute(
-														'src',
-														'https://www.flickr.com/images/buddyicon.gif'
-													);
-												}}
-											/>
-											<span onClick={() => fetchData({ type: 'user', id: data.owner })}>
-												{data.owner}
-											</span>
-										</div>
-									</div>
-								</article>
-							);
-						})}
-					</Masonry>
-				</div>
 			)}
+			<div className='picFrame' ref={refFrame}>
+				<Masonry
+					elementType={'div'}
+					options={{ transitionDuration: '0.5s' }}
+					disableImagesLoaded={false}
+					updateOnEachImageLoad={false}
+				>
+					{Pics.map((data, idx) => {
+						return (
+							<article key={idx}>
+								<div className='inner'>
+									<img
+										className='pic'
+										src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`}
+										alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
+									/>
+									<h2>{data.title}</h2>
+
+									<div className='profile'>
+										<img
+											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
+											alt={data.owner}
+											onError={(e) => {
+												//만약 사용자가 프로필 이미지를 올리지 않았을때 엑박이 뜨므로
+												//onError이벤트를 연결해서 대체이미지 출력
+												e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif');
+											}}
+										/>
+										<span onClick={() => fetchData({ type: 'user', id: data.owner })}>
+											{data.owner}
+										</span>
+									</div>
+								</div>
+							</article>
+						);
+					})}
+				</Masonry>
+			</div>
 		</Layout>
 	);
 }
