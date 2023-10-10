@@ -15,7 +15,7 @@ export default function Gallery() {
 		setLoader(true);
 		refFrame.current.classList.remove('on');
 		let url = '';
-		const api_key = '2a1a0aebb34012a99c23e13b49175343';
+		const api_key = 'df39eea7518a5a4528b7bc5488282b35';
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
@@ -89,6 +89,12 @@ export default function Gallery() {
 						//각 버튼 클릭시 해당 버튼에 만약 on클래스가 있으면 이미 활성화 되어 있는 버튼이므로 return으로 종료해서
 						//fetchData함수 호출 방지
 						if (e.target.classList.contains('on')) return;
+
+						//클릭한 버튼요소에 on이없으면 해당 버튼활성화
+						const btns = refBtnSet.current.querySelectorAll('button');
+						btns.forEach((btn) => btn.classList.remove('on'));
+						e.target.classList.add('on');
+
 						fetchData({ type: 'user', id: my_id });
 					}}
 				>
@@ -99,6 +105,12 @@ export default function Gallery() {
 						//각 버튼 클릭시 해당 버튼에 만약 on클래스가 있으면 이미 활성화 되어 있는 버튼이므로 return으로 종료해서
 						//fetchData함수 호출 방지
 						if (e.target.classList.contains('on')) return;
+
+						//클릭한 버튼요소에 on이없으면 해당 버튼활성화
+						const btns = refBtnSet.current.querySelectorAll('button');
+						btns.forEach((btn) => btn.classList.remove('on'));
+						e.target.classList.add('on');
+
 						fetchData({ type: 'interest' });
 					}}
 				>
