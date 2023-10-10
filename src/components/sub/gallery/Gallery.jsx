@@ -4,14 +4,15 @@ import { useState, useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-component';
 
 export default function Gallery() {
+	const refFrame = useRef(null);
 	const refInput = useRef(null);
 	const [Pics, setPics] = useState([]);
-	const [Loader, setLoader] = useState(true);
+	const [Loader, setLoader] = useState(false);
 	const my_id = '164021883@N04';
 
 	const fetchData = async (opt) => {
 		let url = '';
-		const api_key = '2a1a0aebb34012a99c23e13b49175343';
+		const api_key = 'df39eea7518a5a4528b7bc5488282b35';
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
@@ -35,7 +36,21 @@ export default function Gallery() {
 		if (json.photos.photo.length === 0) {
 			return alert('해당 검색어의 결과값이 없습니다.');
 		}
+		//실제 데이터가 state에 담기는 순간 가상돔이 생성되는 순간
 		setPics(json.photos.photo);
+
+		let count = 0;
+		const imgs = refFrame.current?.querySelectorAll('img');
+
+		imgs.forEach((img, idx) => {
+			img.onload = () => {
+				++count;
+				console.log('현재 로딩된 img갯수', count);
+				if (count === imgs.length) {
+					console.log('모든 이미지 소스 렌더링 완료!');
+				}
+			};
+		});
 	};
 
 	useEffect(() => {
@@ -70,7 +85,7 @@ export default function Gallery() {
 			{Loader ? (
 				<img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='loading' />
 			) : (
-				<div className='picFrame'>
+				<div className='picFrame' ref={refFrame}>
 					<Masonry
 						elementType={'div'}
 						options={{ transitionDuration: '0.5s' }}
