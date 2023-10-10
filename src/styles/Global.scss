@@ -13,12 +13,21 @@ a {
 	color: inherit;
 }
 
+body {
+	background: #eee;
+}
+
 html {
 	&::-webkit-scrollbar {
 		width: 8px;
 	}
 	&::-webkit-scrollbar-thumb {
 		border-radius: 4px;
-		background: #000;
+		background: #333;
 	}
 }
+/*
+:root {
+	--tablet: 1199px;
+}
+*/
