@@ -1,4 +1,5 @@
 import Layout from '../../common/layout/Layout';
+import Modal from '../../common/modal/Modal';
 import './Gallery.scss';
 import { useState, useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-component';
@@ -9,11 +10,13 @@ export default function Gallery() {
 	const refBtnSet = useRef(null);
 	const [Pics, setPics] = useState([]);
 	const [Loader, setLoader] = useState(true);
+	const [ActiveURL, setActiveURL] = useState('');
 	//대체이미지가 추가되었는지 아닌지를 확인하는 state
 	//Fix(true): 대체이미지 추가됨, Fix(false): 대체이미지 적용안됨
 	const [Fix, setFix] = useState(false);
 	//현재 갤러리 타입이 User타입인지 확인하기 위한 state추가
 	const [IsUser, setIsUser] = useState(true);
+	const [Open, setOpen] = useState(false);
 	const my_id = '164021883@N04';
 
 	const fetchData = async (opt) => {
@@ -21,7 +24,7 @@ export default function Gallery() {
 		setLoader(true);
 		refFrame.current.classList.remove('on');
 		let url = '';
-		const api_key = 'df39eea7518a5a4528b7bc5488282b35';
+		const api_key = '2a1a0aebb34012a99c23e13b49175343';
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
@@ -69,114 +72,133 @@ export default function Gallery() {
 	}, []);
 
 	return (
-		<Layout title={'Gallery'}>
-			<div className='searchBox'>
-				<form
-					onSubmit={(e) => {
-						e.preventDefault();
-						//검색 갤러리 이벤트 발생시 IsUser값을 false로 변경
-						setIsUser(false);
-						if (refInput.current.value.trim() === '') {
-							return alert('검색어를 입력하세요.');
-						}
+		<>
+			<Layout title={'Gallery'}>
+				<div className='searchBox'>
+					<form
+						onSubmit={(e) => {
+							e.preventDefault();
+							//검색 갤러리 이벤트 발생시 IsUser값을 false로 변경
+							setIsUser(false);
+							if (refInput.current.value.trim() === '') {
+								return alert('검색어를 입력하세요.');
+							}
 
-						fetchData({ type: 'search', tags: refInput.current.value });
-						refInput.current.value = '';
-					}}
-				>
-					<input ref={refInput} type='text' placeholder='검색어를 입력하세요' />
-					<button>검색</button>
-				</form>
-			</div>
+							fetchData({ type: 'search', tags: refInput.current.value });
+							refInput.current.value = '';
+						}}
+					>
+						<input ref={refInput} type='text' placeholder='검색어를 입력하세요' />
+						<button>검색</button>
+					</form>
+				</div>
 
-			<div className='btnSet' ref={refBtnSet}>
-				<button
-					className='on'
-					onClick={(e) => {
-						//마이갤러리 버튼 클릭시 User type갤러리이기 때문에 IsUser값을 true로 변경
-						setIsUser(true);
-						if (e.target.classList.contains('on')) return;
+				<div className='btnSet' ref={refBtnSet}>
+					<button
+						className='on'
+						onClick={(e) => {
+							//마이갤러리 버튼 클릭시 User type갤러리이기 때문에 IsUser값을 true로 변경
+							setIsUser(true);
+							if (e.target.classList.contains('on')) return;
 
-						const btns = refBtnSet.current.querySelectorAll('button');
-						btns.forEach((btn) => btn.classList.remove('on'));
-						e.target.classList.add('on');
+							const btns = refBtnSet.current.querySelectorAll('button');
+							btns.forEach((btn) => btn.classList.remove('on'));
+							e.target.classList.add('on');
 
-						fetchData({ type: 'user', id: my_id });
-					}}
-				>
-					My Gallery
-				</button>
-				<button
-					onClick={(e) => {
-						//Interest Gallery는 User type 갤러리가 아니기 때문에
-						//IsUser값을 false로 변경
-						setIsUser(false);
-						if (e.target.classList.contains('on')) return;
+							fetchData({ type: 'user', id: my_id });
+						}}
+					>
+						My Gallery
+					</button>
+					<button
+						onClick={(e) => {
+							//Interest Gallery는 User type 갤러리가 아니기 때문에
+							//IsUser값을 false로 변경
+							setIsUser(false);
+							if (e.target.classList.contains('on')) return;
 
-						const btns = refBtnSet.current.querySelectorAll('button');
-						btns.forEach((btn) => btn.classList.remove('on'));
-						e.target.classList.add('on');
+							const btns = refBtnSet.current.querySelectorAll('button');
+							btns.forEach((btn) => btn.classList.remove('on'));
+							e.target.classList.add('on');
 
-						fetchData({ type: 'interest' });
-					}}
-				>
-					Interest Gallery
-				</button>
-			</div>
+							fetchData({ type: 'interest' });
+						}}
+					>
+						Interest Gallery
+					</button>
+				</div>
 
-			{Loader && (
-				<img className='loading' src={`${process.env.PUBLIC_URL}/img/loading.gif`} alt='loading' />
-			)}
-			<div className='picFrame' ref={refFrame}>
-				<Masonry
-					elementType={'div'}
-					options={{ transitionDuration: '0.5s' }}
-					disableImagesLoaded={false}
-					updateOnEachImageLoad={false}
-				>
-					{Pics.map((data, idx) => {
-						return (
-							<article key={idx}>
-								<div className='inner'>
-									<img
-										className='pic'
-										src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`}
-										alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
-									/>
-									<h2>{data.title}</h2>
-
-									<div className='profile'>
+				{Loader && (
+					<img
+						className='loading'
+						src={`${process.env.PUBLIC_URL}/img/loading.gif`}
+						alt='loading'
+					/>
+				)}
+				<div className='picFrame' ref={refFrame}>
+					<Masonry
+						elementType={'div'}
+						options={{ transitionDuration: '0.5s' }}
+						disableImagesLoaded={false}
+						updateOnEachImageLoad={false}
+					>
+						{Pics.map((data, idx) => {
+							return (
+								<article key={idx}>
+									<div className='inner'>
 										<img
-											src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
-											alt={data.owner}
-											onError={(e) => {
-												//만약 프로필 이미지에서 에러가 발생하면 대체이미지를 추가
-												//이때 대체이미지는 같은 이미지를 계속 호출하기 때문에 이미 캐싱처리 되어 있어서
-												//다음번 렌더링 타이임에 count값에 포함이 안됨
-												//따라서 대체이미지 추가 유무를 Fix라는 state에 담아서 구분
-												setFix(true);
-												e.target.setAttribute('src', 'https://www.flickr.com/images/buddyicon.gif');
+											className='pic'
+											src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`}
+											alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
+											onClick={(e) => {
+												setActiveURL(e.target.getAttribute('alt'));
+												setOpen(true);
 											}}
 										/>
-										<span
-											onClick={() => {
-												//사용자 아이디 클릭시 현재 출력되는 갤러리가 User 타입 갤러리면 이벤트 호출 방지
-												if (IsUser) return;
+										<h2>{data.title}</h2>
 
-												//fetchData가 실행이 되면 다시 User type갤러리로 변경되므로 다시 IsUser값을 true로 변경
-												fetchData({ type: 'user', id: data.owner });
-												setIsUser(true);
-											}}
-										>
-											{data.owner}
-										</span>
+										<div className='profile'>
+											<img
+												src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
+												alt={data.owner}
+												onError={(e) => {
+													//만약 프로필 이미지에서 에러가 발생하면 대체이미지를 추가
+													//이때 대체이미지는 같은 이미지를 계속 호출하기 때문에 이미 캐싱처리 되어 있어서
+													//다음번 렌더링 타이임에 count값에 포함이 안됨
+													//따라서 대체이미지 추가 유무를 Fix라는 state에 담아서 구분
+													setFix(true);
+													e.target.setAttribute(
+														'src',
+														'https://www.flickr.com/images/buddyicon.gif'
+													);
+												}}
+											/>
+											<span
+												onClick={() => {
+													//사용자 아이디 클릭시 현재 출력되는 갤러리가 User 타입 갤러리면 이벤트 호출 방지
+													if (IsUser) return;
+
+													//fetchData가 실행이 되면 다시 User type갤러리로 변경되므로 다시 IsUser값을 true로 변경
+													fetchData({ type: 'user', id: data.owner });
+													setIsUser(true);
+												}}
+											>
+												{data.owner}
+											</span>
+										</div>
 									</div>
-								</div>
-							</article>
-						);
-					})}
-				</Masonry>
-			</div>
-		</Layout>
+								</article>
+							);
+						})}
+					</Masonry>
+				</div>
+			</Layout>
+
+			{Open && (
+				<Modal>
+					<img src={ActiveURL} alt='img' />
+				</Modal>
+			)}
+		</>
 	);
 }
