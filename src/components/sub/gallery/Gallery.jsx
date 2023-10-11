@@ -13,7 +13,7 @@ export default function Gallery() {
 	const [ActiveURL, setActiveURL] = useState('');
 	const [Fix, setFix] = useState(false);
 	const [IsUser, setIsUser] = useState(true);
-	const [Open, setOpen] = useState(false);
+	const [IsModal, setIsModal] = useState(false);
 	const my_id = '164021883@N04';
 
 	//처음 마운트 데이터 호출 함수
@@ -135,6 +135,7 @@ export default function Gallery() {
 						alt='loading'
 					/>
 				)}
+
 				<div className='picFrame' ref={refFrame}>
 					<Masonry
 						elementType={'div'}
@@ -152,7 +153,7 @@ export default function Gallery() {
 											alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
 											onClick={(e) => {
 												setActiveURL(e.target.getAttribute('alt'));
-												setOpen(true);
+												setIsModal(true);
 											}}
 										/>
 										<h2>{data.title}</h2>
@@ -179,8 +180,8 @@ export default function Gallery() {
 				</div>
 			</Layout>
 
-			{Open && (
-				<Modal>
+			{IsModal && (
+				<Modal setIsModal={setIsModal}>
 					<img src={ActiveURL} alt='img' />
 				</Modal>
 			)}

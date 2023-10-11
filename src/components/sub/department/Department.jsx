@@ -19,6 +19,16 @@ export default function Department() {
 
 	return (
 		<Layout title={'Department'}>
+			<h2 className='wow'>Members</h2>
+			<h3 className='woww'>
+				Lorem ipsum dolor sit amet consectetur <br />
+				adipisicing elit. Impedit similique accusamus, consequuntur molestiae eveniet doloribus
+				<br />
+				error esse neque rem alias facilis vitae corporis magnam iure nisi deleniti? Eum, provident
+				<br />
+				doloribus?
+			</h3>
+
 			<div className='memberBox'>
 				{Department.map((member, idx) => {
 					return (

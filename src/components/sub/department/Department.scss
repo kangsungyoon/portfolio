@@ -3,6 +3,11 @@
 		background-color: lightblue;
 	}
 
+	.wow {
+		font-size: 40px;
+		color: #3333cc;
+	}
+
 	.historyBox {
 		margin: 100px 0px;
 		article {
@@ -45,17 +50,17 @@
 
 			.pic {
 				width: 100%;
-				height: 30vw;
+				height: 50vh;
+				margin-bottom: 10px;
 
 				img {
 					width: 100%;
-					height: 100%;
+					height: 70%;
 					object-fit: cover;
 				}
-			}
-
-			h2 {
-				margin-bottom: 10px;
+				h2 {
+					margin-top: -100px;
+				}
 			}
 		}
 	}
