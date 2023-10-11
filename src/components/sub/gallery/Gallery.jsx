@@ -16,12 +16,13 @@ export default function Gallery() {
 	const [Open, setOpen] = useState(false);
 	const my_id = '164021883@N04';
 
+	//처음 마운트 데이터 호출 함수
 	const fetchData = async (opt) => {
 		let count = 0;
 		setLoader(true);
 		refFrame.current.classList.remove('on');
 		let url = '';
-		const api_key = 'df39eea7518a5a4528b7bc5488282b35';
+		const api_key = '2a1a0aebb34012a99c23e13b49175343';
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
@@ -46,7 +47,6 @@ export default function Gallery() {
 		setPics(json.photos.photo);
 
 		const imgs = refFrame.current?.querySelectorAll('img');
-		console.log(imgs);
 
 		imgs.forEach((img) => {
 			img.onload = () => {
@@ -59,6 +59,53 @@ export default function Gallery() {
 		});
 	};
 
+	//submit이벤트 발생시 실행할 함수
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setIsUser(false);
+
+		const btns = refBtnSet.current.querySelectorAll('button');
+		btns.forEach((btn) => btn.classList.remove('on'));
+
+		if (refInput.current.value.trim() === '') {
+			return alert('검색어를 입력하세요.');
+		}
+
+		fetchData({ type: 'search', tags: refInput.current.value });
+		refInput.current.value = '';
+	};
+
+	//myGallery 클릭 이벤트 발생시 실행할 함수
+	const handleClickMy = (e) => {
+		setIsUser(true);
+		if (e.target.classList.contains('on')) return;
+
+		const btns = refBtnSet.current.querySelectorAll('button');
+		btns.forEach((btn) => btn.classList.remove('on'));
+		e.target.classList.add('on');
+
+		fetchData({ type: 'user', id: my_id });
+	};
+
+	//Interest Gallery 클릭 이벤트 발생시 실행할 함수
+	const handleClickInterest = (e) => {
+		setIsUser(false);
+		if (e.target.classList.contains('on')) return;
+
+		const btns = refBtnSet.current.querySelectorAll('button');
+		btns.forEach((btn) => btn.classList.remove('on'));
+		e.target.classList.add('on');
+
+		fetchData({ type: 'interest' });
+	};
+
+	//profile 아이디 클릭시 실행할 함수
+	const handleClickProfile = (e) => {
+		if (IsUser) return;
+		fetchData({ type: 'user', id: e.target.innerText });
+		setIsUser(true);
+	};
+
 	useEffect(() => {
 		fetchData({ type: 'user', id: my_id });
 	}, []);
@@ -67,57 +114,18 @@ export default function Gallery() {
 		<>
 			<Layout title={'Gallery'}>
 				<div className='searchBox'>
-					<form
-						onSubmit={(e) => {
-							e.preventDefault();
-							setIsUser(false);
-
-							const btns = refBtnSet.current.querySelectorAll('button');
-							btns.forEach((btn) => btn.classList.remove('on'));
-
-							if (refInput.current.value.trim() === '') {
-								return alert('검색어를 입력하세요.');
-							}
-
-							fetchData({ type: 'search', tags: refInput.current.value });
-							refInput.current.value = '';
-						}}
-					>
+					<form onSubmit={handleSubmit}>
 						<input ref={refInput} type='text' placeholder='검색어를 입력하세요' />
 						<button>검색</button>
 					</form>
 				</div>
 
 				<div className='btnSet' ref={refBtnSet}>
-					<button
-						className='on'
-						onClick={(e) => {
-							setIsUser(true);
-							if (e.target.classList.contains('on')) return;
-
-							const btns = refBtnSet.current.querySelectorAll('button');
-							btns.forEach((btn) => btn.classList.remove('on'));
-							e.target.classList.add('on');
-
-							fetchData({ type: 'user', id: my_id });
-						}}
-					>
+					<button className='on' onClick={handleClickMy}>
 						My Gallery
 					</button>
-					<button
-						onClick={(e) => {
-							setIsUser(false);
-							if (e.target.classList.contains('on')) return;
 
-							const btns = refBtnSet.current.querySelectorAll('button');
-							btns.forEach((btn) => btn.classList.remove('on'));
-							e.target.classList.add('on');
-
-							fetchData({ type: 'interest' });
-						}}
-					>
-						Interest Gallery
-					</button>
+					<button onClick={handleClickInterest}>Interest Gallery</button>
 				</div>
 
 				{Loader && (
@@ -161,15 +169,7 @@ export default function Gallery() {
 													);
 												}}
 											/>
-											<span
-												onClick={() => {
-													if (IsUser) return;
-													fetchData({ type: 'user', id: data.owner });
-													setIsUser(true);
-												}}
-											>
-												{data.owner}
-											</span>
+											<span onClick={handleClickProfile}>{data.owner}</span>
 										</div>
 									</div>
 								</article>
