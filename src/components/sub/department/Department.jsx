@@ -87,6 +87,13 @@ fetch는 promise반환
 promise가 반환 되야지 .then 구문으로 호출가능
 .then 구문을 호출해여지만 동기적으로 다음코드 실행가능
 
+promise : 데이터의 상태값을 추적할 수 있는 객체
+promise의 3가지 상태
+
+- pending : 요청을 보내고 응답을 받기까지의 대기상태
+- fulfilled : pending이 끝나고 요청에 대한 응답을 성공적으로 받은 상태
+- rejected : pending이 끝나고 요청에 대한 응답을 받긴 하지만 에러를 반환받은 상태를 rejected
+
 
 JSON ( Javascript Object Notation ) 자바스크리브 객체 표현식
 	- 자바스크립트의 객체를 문자열 형태로 관리하는 데이터 형식
