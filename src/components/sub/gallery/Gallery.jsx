@@ -5,24 +5,18 @@ import { useState, useEffect, useRef } from 'react';
 import Masonry from 'react-masonry-component';
 
 export default function Gallery() {
-	const refFrame = useRef(null);
 	const refInput = useRef(null);
 	const refBtnSet = useRef(null);
 	const [Pics, setPics] = useState([]);
-	const [Loader, setLoader] = useState(true);
 	const [ActiveURL, setActiveURL] = useState('');
-	const [Fix, setFix] = useState(false);
 	const [IsUser, setIsUser] = useState(true);
 	const [IsModal, setIsModal] = useState(false);
 	const my_id = '164021883@N04';
 
 	//처음 마운트 데이터 호출 함수
 	const fetchData = async (opt) => {
-		let count = 0;
-		setLoader(true);
-		refFrame.current.classList.remove('on');
 		let url = '';
-		const api_key = 'df39eea7518a5a4528b7bc5488282b35';
+		const api_key = '2a1a0aebb34012a99c23e13b49175343';
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
@@ -45,18 +39,6 @@ export default function Gallery() {
 			return alert('해당 검색어의 결과값이 없습니다.');
 		}
 		setPics(json.photos.photo);
-
-		const imgs = refFrame.current?.querySelectorAll('img');
-
-		imgs.forEach((img) => {
-			img.onload = () => {
-				++count;
-				if (count === (Fix ? imgs.length / 2 - 1 : imgs.length - 2)) {
-					setLoader(false);
-					refFrame.current.classList.add('on');
-				}
-			};
-		});
 	};
 
 	//submit이벤트 발생시 실행할 함수
@@ -128,15 +110,7 @@ export default function Gallery() {
 					<button onClick={handleClickInterest}>Interest Gallery</button>
 				</div>
 
-				{Loader && (
-					<img
-						className='loading'
-						src={`${process.env.PUBLIC_URL}/img/loading.gif`}
-						alt='loading'
-					/>
-				)}
-
-				<div className='picFrame' ref={refFrame}>
+				<div className='picFrame'>
 					<Masonry
 						elementType={'div'}
 						options={{ transitionDuration: '0.5s' }}
@@ -163,7 +137,6 @@ export default function Gallery() {
 												src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
 												alt={data.owner}
 												onError={(e) => {
-													setFix(true);
 													e.target.setAttribute(
 														'src',
 														'https://www.flickr.com/images/buddyicon.gif'
@@ -188,3 +161,13 @@ export default function Gallery() {
 		</>
 	);
 }
+
+/*
+	클릭한 버튼을 또 클릭했을때 같은 데이터를 불필요하게 또다시 fetching요청하지 않도록
+	클릭한 버튼에 on이 붙어있을때 함수 호출을 강제 중지
+
+	현재 출력되는 갤러리 방식이 User type 갤러리일때 같은 사용자의 갤러리가 보이는 형태이므로
+	사용자 아이디를 클릭하게되면 같은 데이터 요청을 보내게됨
+	--- 사용자 타입의 갤러리를 호출할때마다 IsUser state값을 true로 변경해서 
+	----이벤트가 발생할때마다 IsUser값이 true 사용자 아이디 클릭 이벤트 핸들러 제거
+*/

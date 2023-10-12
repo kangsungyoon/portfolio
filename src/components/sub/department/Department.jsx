@@ -18,7 +18,6 @@ export default function Department() {
 
 	return (
 		<Layout title={'Department'}>
-			<h2 className='wow'>Member</h2>
 			<p className='woww'>
 				Lorem ipsum dolor, sit amet consectetur adipisicing elit. <br />
 				Magnam nulla quae rem et perspiciatis illo. Aperiam,

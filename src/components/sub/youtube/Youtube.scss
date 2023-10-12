@@ -25,10 +25,10 @@
 					height: 200px;
 					img {
 						width: 100%;
-						height: 100%;
+						height: 66%;
 						object-fit: cover;
 						height: auto;
-						border-radius: 10%;
+						border-radius: 0%;
 					}
 				}
 				.titBox {
@@ -37,7 +37,7 @@
 					white-space: nowrap;
 					overflow: hidden;
 					text-overflow: ellipsis;
-					margin-top: 200px;
+					margin-top: 150px;
 				}
 
 				.conBox {
