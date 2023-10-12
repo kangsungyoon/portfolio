@@ -9,10 +9,10 @@ export default function Youtube() {
 
 	//async await로 동기화 코드를 좀더 깔끔하게 정리
 	const fetchYoutube = async () => {
-		const api_key = process.env.REACT_APP_YOUTUBE_API;
+		const api_key = 'AIzaSyDCGJcstcAwUWDoTcrQ4CZeSjdkDz8RSB4';
 		const baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems';
-		const pid = 'PLHtvRFLN5v-W5bQjvyH8QTdQQhgflJ3nu';
-		const num = 5;
+		const pid = 'PLSflH3hv0IGX5YEKeboI4EFY3h5g6nFKU';
+		const num = 6;
 		const resultURL = `${baseURL}?key=${api_key}&part=snippet&playlistId=${pid}&maxResults=${num}`;
 
 		const data = await fetch(resultURL);
@@ -27,28 +27,34 @@ export default function Youtube() {
 	return (
 		<>
 			<Layout title={'Youtube'}>
-				{Youtube.map((data, idx) => {
-					let tit = data.snippet.title;
-					let desc = data.snippet.description;
-					let date = data.snippet.publishedAt;
+				<div className='wrab'>
+					{Youtube.map((data, idx) => {
+						let tit = data.snippet.title;
+						let desc = data.snippet.description;
+						let date = data.snippet.publishedAt;
 
-					return (
-						<article key={idx}>
-							<h2>{tit.length > 60 ? tit.substr(0, 60) + '...' : tit}</h2>
-							<p>{desc.length > 180 ? desc.substr(0, 180) + '...' : desc}</p>
-							<span>{date.split('T')[0].split('-').join('.')}</span>
-							<div
-								className='pic'
-								onClick={() => {
-									setIndex(idx);
-									setIsModal(true);
-								}}
-							>
-								<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
-							</div>
-						</article>
-					);
-				})}
+						return (
+							<article key={idx}>
+								<div
+									className='picBox'
+									onClick={() => {
+										setIndex(idx);
+										setIsModal(true);
+									}}
+								>
+									<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
+								</div>
+								<div className='titBox'>
+									<h2>{tit.length > 60 ? tit.substr(0, 60) + '...' : tit}</h2>
+								</div>
+								<div className='conBox'>
+									<p>{desc.length > 180 ? desc.substr(0, 180) + '...' : desc}</p>
+									<span>{date.split('T')[0].split('-').join('.')}</span>
+								</div>
+							</article>
+						);
+					})}
+				</div>
 			</Layout>
 
 			{IsModal && (

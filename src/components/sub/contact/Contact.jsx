@@ -10,8 +10,14 @@ export default function Contact() {
 	const [Traffic, setTraffic] = useState(false);
 	const [Index, setIndex] = useState(0);
 	const [IsMap, setIsMap] = useState(true);
+
+	// kako Api를 cdn 방식으로 불러오고 있기 떄문에 리액트 컴포넌트가 실행되면 window객체에서 직접 비구조화 할당으로 kakao 객체를 뽑아옴
 	const { kakao } = window;
 	//첫번째 지도를 출력하기 위한 객체정보
+
+	// 지도정보데이터를 객체형식으로 구조화한 다음에 데이터 기반으로 자동 지도화면이 생성되도록 만들었다.
+	// 데이터 정보가 많아질때를 대비해서 유지보수에 최적화 되도록 코드 개선
+	// 해당 정보값은 자주 바뀌는값이 아니기 떄문에 굳이 state에 담아서 불필요한 재랜더링을 막기 위해 useRef에 담아놨다
 	const info = useRef([
 		{
 			title: '삼성역 코엑스',
