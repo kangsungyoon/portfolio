@@ -1,11 +1,9 @@
 import Layout from '../../common/layout/Layout';
-import Modal from '../../common/modal/Modal';
 import './Youtube.scss';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 export default function Youtube() {
 	const [Youtube, setYoutube] = useState([]);
-	const [IsModal, setIsModal] = useState(false);
-	const [Index, setIndex] = useState(0);
 
 	//async await로 동기화 코드를 좀더 깔끔하게 정리
 	const fetchYoutube = async () => {
@@ -35,14 +33,10 @@ export default function Youtube() {
 
 						return (
 							<article key={idx}>
-								<div
-									className='picBox'
-									onClick={() => {
-										setIndex(idx);
-										setIsModal(true);
-									}}
-								>
-									<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
+								<div className='picBox'>
+									<Link to={`/detail/${data.id}`}>
+										<img src={data.snippet.thumbnails.standard.url} alt={data.title} />
+									</Link>
 								</div>
 								<div className='titBox'>
 									<h2>{tit.length > 60 ? tit.substr(0, 60) + '...' : tit}</h2>
@@ -57,14 +51,14 @@ export default function Youtube() {
 				</div>
 			</Layout>
 
-			{IsModal && (
+			{/* {IsModal && (
 				<Modal setIsModal={setIsModal}>
 					<iframe
 						src={`https://www.youtube.com/embed/${Youtube[Index].snippet.resourceId.videoId}`}
 						title='youtube'
 					></iframe>
 				</Modal>
-			)}
+			)} */}
 		</>
 	);
 }

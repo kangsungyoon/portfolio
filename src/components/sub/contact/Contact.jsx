@@ -80,7 +80,7 @@ export default function Contact() {
 
 		// Contact페이지에만 동작되야 되는 핸들러 함수를 최상위 객체인 window에 직접 연결했기 때문에
 		// 라우터로 다른페이지 이동하더라도 계속해서 setCenter호출되는 문제 발생
-		// 해결방법 : Contact 컴포넌트가 언마운트시 강제로 윈도우 객체에서 setCenter핸들러를 제가
+		// 해결방법 : Contact 컴포넌트가 언마운트시 강제로 윈도우 객체에서 setCenter핸들러를 제거
 		window.addEventListener('resize', setCenter);
 
 		//로드뷰 관련 코드
