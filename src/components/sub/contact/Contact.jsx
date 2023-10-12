@@ -150,6 +150,13 @@ export default function Contact() {
 
 	return (
 		<Layout title={'Contact'}>
+			<div className='haha'>
+				<img src='../img/rarara.jpg' alt=''></img>
+			</div>
+			<div className='hahaTxt'>
+				<h2>Contact</h2>
+			</div>
+
 			<div id='mailBox'>
 				<form ref={form} onSubmit={sendEmail}>
 					<div className='upper'>
@@ -175,7 +182,32 @@ export default function Contact() {
 					</div>
 				</form>
 			</div>
-
+			<section className='conBox'>
+				<div>
+					<h2 className='tt'>Lorem, ipsum dolor.</h2>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, <br />
+						adipisicing elit. Tempore fugit itaque, <br />
+						adipisci inventore soluta saepe.
+					</p>
+				</div>{' '}
+				<div>
+					<h2 className='tt'>Lorem, ipsum dolor.</h2>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, <br />
+						adipisicing elit. Tempore fugit itaque, <br />
+						adipisci inventore soluta saepe.
+					</p>
+				</div>{' '}
+				<div>
+					<h2 className='tt'>Lorem, ipsum dolor.</h2>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, <br />
+						adipisicing elit. Tempore fugit itaque, <br />
+						adipisci inventore soluta saepe.
+					</p>
+				</div>
+			</section>
 			<div id='mapBox'>
 				<button onClick={() => setTraffic(!Traffic)}>
 					{Traffic ? '교통정보 끄기' : '교통정보 켜기'}

@@ -1,7 +1,37 @@
 .Contact {
 	figure {
-		background: orange;
+		color: gray;
 	}
+	h1 {
+		position: absolute !important;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+		clip: rect(1px, 1px, 1px, 1px);
+	}
+	.haha {
+		width: 100%;
+		margin: 10px auto;
+		position: relative;
+
+		img {
+			width: 100%;
+			vertical-align: middle;
+		}
+	}
+	.hahaTxt {
+		h2 {
+			position: absolute;
+			top: 750px;
+			left: 50%;
+			width: 100%;
+			transform: translate(-50%, -50%);
+			font-size: 150px;
+			text-align: center;
+		}
+	}
+
 	#mailbox {
 		width: 50%;
 		margin-bottom: 100px;
@@ -75,6 +105,22 @@
 		// 	}
 		// }
 	}
+	.conBox {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		text-align: center;
+		margin-top: 100px;
+		margin-bottom: 100px;
+
+		div {
+			width: 33%;
+		}
+		.tt {
+			text-decoration: overline;
+		}
+	}
+
 	.container {
 		width: 100%;
 		height: 60vh;
