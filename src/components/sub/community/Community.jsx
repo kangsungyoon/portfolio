@@ -54,19 +54,46 @@ export default function Community() {
 
 			<div className='showBox'>
 				{Posts.map((post, idx) => {
-					return (
-						<article key={idx}>
-							<div className='txt'>
-								<h2>{post.title}</h2>
-								<p>{post.content}</p>
-							</div>
+					if (post.enableUpdate) {
+						return (
+							<article key={idx}>
+								<div className='txt'>
+									<input
+										type='text'
+										value={post.title}
+										onChange={(e) => {
+											console.log(e.target.value);
+										}}
+									/>
+									<br />
+									<textarea
+										//react에서 value속성을 적용하려면 무조건 onChange이벤트 연결 필수
+										//onChange이벤트 연결하지 않을때에는 value가닌 defaultValue속성 적용
+										value={post.content}
+										onChange={(e) => console.log(e.target.value)}
+									/>
+								</div>
+								<nav className='btnSet'>
+									<button>Cancel</button>
+									<button>Update</button>
+								</nav>
+							</article>
+						);
+					} else {
+						return (
+							<article key={idx}>
+								<div className='txt'>
+									<h2>{post.title}</h2>
+									<p>{post.content}</p>
+								</div>
 
-							<nav className='btnSet'>
-								<button onClick={() => enableUpdate(idx)}>Edit</button>
-								<button onClick={() => deletePost(idx)}>Delete</button>
-							</nav>
-						</article>
-					);
+								<nav className='btnSet'>
+									<button onClick={() => enableUpdate(idx)}>Edit</button>
+									<button onClick={() => deletePost(idx)}>Delete</button>
+								</nav>
+							</article>
+						);
+					}
 				})}
 			</div>
 		</Layout>
