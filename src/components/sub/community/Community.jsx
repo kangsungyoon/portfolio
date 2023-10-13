@@ -29,7 +29,14 @@ export default function Community() {
 			return alert('제목과 본문을 모두 입력하세요.');
 		}
 		//기존 Posts 배열값을 Deep copy해서 가져온뒤, 그 뒤에 추가로 방금 입력한 객체를 배열에 추가
-		setPosts([{ title: refInput.current.value, content: refTextarea.current.value }, ...Posts]);
+		setPosts([
+			{
+				title: refInput.current.value,
+				content: refTextarea.current.value,
+				data: new Date(),
+			},
+			...Posts,
+		]);
 		resetForm();
 	};
 
@@ -101,6 +108,10 @@ export default function Community() {
 
 			<div className='showBox'>
 				{Posts.map((post, idx) => {
+					const string = JSON.stringify(post.data);
+
+					const [year, month, date] = string.split('T')[0].split('"')[1].split('-');
+
 					if (post.enableUpdate) {
 						//수정 모드 렌더링
 						return (
@@ -130,11 +141,13 @@ export default function Community() {
 						);
 					} else {
 						//출력 모드 렌더링
+
 						return (
 							<article key={idx}>
 								<div className='txt'>
 									<h2>{post.title}</h2>
 									<p>{post.content}</p>
+									<p>{`${year}-${month}-${date}`}</p>
 								</div>
 
 								<nav className='btnSet'>
