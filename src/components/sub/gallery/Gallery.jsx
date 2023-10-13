@@ -16,7 +16,7 @@ export default function Gallery() {
 	//처음 마운트 데이터 호출 함수
 	const fetchData = async (opt) => {
 		let url = '';
-		const api_key = '2a1a0aebb34012a99c23e13b49175343';
+		const api_key = 'df39eea7518a5a4528b7bc5488282b35';
 		const method_interest = 'flickr.interestingness.getList';
 		const method_user = 'flickr.people.getPhotos';
 		const method_search = 'flickr.photos.search';
