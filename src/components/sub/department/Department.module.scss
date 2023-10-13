@@ -1,0 +1,10 @@
+.abc {
+	color: red;
+}
+
+
+/*
+  scss
+  module.scss 모듈화 ( JSX+ style 분리, JSX의 코드 복잡도는 적지만 관리할 파일이 많아짐)
+  styled-component 모듈화 ( JSX안쪽에 style을 컴포넌트 형태로 삽입, 개별적인 파일코드의 복잡도는 올라가지만 파일의 갯수는 줄어듬)
+  tailwindcss 모듈화 ( 파일의 복잡도를 올리지 않으면서 파일의 갯수도 늘리지 않음, 러닝커브가 높음)

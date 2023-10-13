@@ -22,13 +22,13 @@ function Detail() {
 	}, []);
 	return (
 		<Layout title={'Detail'}>
-			<h2>{Data?.title}</h2>
-			<p>{Data?.description}</p>
 			<div className='vidBox'>
 				<iframe
 					src={`https://www.youtube.com/embed/${Data?.resourceId.videoId}`}
 					title='youtube'
 				></iframe>
+				<h2>{Data?.title}</h2>
+				<p>{Data?.description}</p>
 			</div>
 		</Layout>
 	);
