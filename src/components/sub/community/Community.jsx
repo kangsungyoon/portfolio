@@ -5,7 +5,10 @@ import { useRef, useState } from 'react';
 export default function Community() {
 	const refInput = useRef(null);
 	const refTextarea = useRef(null);
+	const refEditInput = useRef(null);
+	const refEditTextarea = useRef(null);
 	const [Posts, setPosts] = useState([]);
+	const [Allowed, setAllowed] = useState(true);
 	console.log(Posts);
 
 	const resetForm = () => {
@@ -29,11 +32,41 @@ export default function Community() {
 
 	//해당 글을 수정모드로 변경시키는 함수
 	const enableUpdate = (editIndex) => {
+		//수정모드 함수 호출시 Allowed가 true가 아니면 return으로 함수 강제 종료
+		if (!Allowed) return;
+		//일단 수정모드에 진입하면 강제로 Allowed값을 false로 변경해서 다른 글 수정모드 진입금지 처리
+		setAllowed(false);
 		setPosts(
 			//Posts 배열값을 반복돌면서 인수로 전달된 수정할 포스트의 순번값과 현재 반복도는 배열의 포스트 순번값이 일치하면
 			//해당 글을 수정처리해야되므로 해당 객체에 enableUpdate=true값을 추가
 			Posts.map((post, idx) => {
 				if (editIndex === idx) post.enableUpdate = true;
+				return post;
+			})
+		);
+	};
+
+	//해당 글을 출력모드로 변경시키는 함수
+	const disableUpdate = (editIndex) => {
+		setAllowed(true);
+		setPosts(
+			Posts.map((post, idx) => {
+				if (editIndex === idx) post.enableUpdate = false;
+				return post;
+			})
+		);
+	};
+
+	//실제 글 수정하는 함수
+	const updatePost = (updateIndex) => {
+		//setPosts로 기존 Post배열같은 덮어쓰기해서 변경
+		//리액트에서는 참조형 자료는 무조건 배열값을 Deep copy한뒤 변경
+		setPosts(
+			Posts.map((post, idx) => {
+				if (updateIndex === idx) {
+					post.title = refEditInput.current.value;
+					post.content = refEditTextarea.current.value;
+				}
 				return post;
 			})
 		);
@@ -55,31 +88,34 @@ export default function Community() {
 			<div className='showBox'>
 				{Posts.map((post, idx) => {
 					if (post.enableUpdate) {
+						//수정 모드 렌더링
 						return (
 							<article key={idx}>
 								<div className='txt'>
-									<input
-										type='text'
-										value={post.title}
-										onChange={(e) => {
-											console.log(e.target.value);
-										}}
-									/>
+									<input type='text' defaultValue={post.title} ref={refEditInput} />
 									<br />
 									<textarea
 										//react에서 value속성을 적용하려면 무조건 onChange이벤트 연결 필수
 										//onChange이벤트 연결하지 않을때에는 value가닌 defaultValue속성 적용
-										value={post.content}
-										onChange={(e) => console.log(e.target.value)}
+										defaultValue={post.content}
+										ref={refEditTextarea}
 									/>
 								</div>
 								<nav className='btnSet'>
-									<button>Cancel</button>
-									<button>Update</button>
+									<button onClick={() => disableUpdate(idx)}>Cancel</button>
+									<button
+										onClick={() => {
+											updatePost(idx);
+											disableUpdate(idx);
+										}}
+									>
+										Update
+									</button>
 								</nav>
 							</article>
 						);
 					} else {
+						//출력 모드 렌더링
 						return (
 							<article key={idx}>
 								<div className='txt'>
