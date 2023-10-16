@@ -1,6 +1,15 @@
 @import '../../../styles/Variable.scss';
 
 .Gallery {
+	.searchBox {
+		width: 30%;
+	}
+	.btnSet {
+		width: 100%;
+		margin-bottom: 30px;
+		display: flex;
+		flex-wrap: wrap;
+	}
 	.loading {
 		position: fixed;
 		top: 50%;
