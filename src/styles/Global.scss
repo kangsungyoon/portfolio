@@ -26,8 +26,15 @@ html {
 		background: #333;
 	}
 }
-/*
-:root {
-	--tablet: 1199px;
+table {
+	border-collapse: collapse;
 }
-*/
+fieldset {
+	border: none;
+}
+
+.h {
+	position: absolute;
+	top: -9999px;
+	opacity: 0;
+}
