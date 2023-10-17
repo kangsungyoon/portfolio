@@ -52,3 +52,65 @@
 		}
 	}
 }
+
+.tablet,
+.mobile {
+	.Youtube {
+		.content {
+			article {
+				flex-wrap: wrap;
+
+				.picBox {
+					width: 100%;
+					margin-top: 30px;
+				}
+				.titBox {
+					display: inline-block;
+					width: 2000px;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					margin-top: 150px;
+				}
+
+				.conBox {
+					display: inline-block;
+					width: 2000px;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					margin-bottom: 1000px;
+				}
+			}
+		}
+	}
+}
+.mobile {
+	.Youtube {
+		.content {
+			article {
+				.picBox {
+					width: 100%;
+					margin-top: 30px;
+				}
+				.titBox {
+					display: inline-block;
+					width: 100%;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					margin-top: 150px;
+				}
+
+				.conBox {
+					display: inline-block;
+					width: 100%;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					margin-bottom: 1000px;
+				}
+			}
+		}
+	}
+}

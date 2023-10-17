@@ -86,3 +86,34 @@
 		}
 	}
 }
+
+.tablet,
+.mobile {
+	.Community {
+		.content {
+			.inputBox {
+				input[type='text'],
+				textarea {
+					width: 100%;
+				}
+
+				.btnSet {
+					display: flex;
+					justify-content: space-between;
+					button {
+						width: 47%;
+
+						margin-right: 3%;
+
+						&:last-child {
+							margin-right: 0%;
+						}
+					}
+				}
+				.tty {
+					margin-top: 20px;
+				}
+			}
+		}
+	}
+}

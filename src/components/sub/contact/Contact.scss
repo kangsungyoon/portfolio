@@ -180,3 +180,24 @@
 		}
 	}
 }
+
+.tablet,
+.mobile {
+	.Contact {
+		.content {
+			.upperBox {
+				#mailBox {
+					width: 100%;
+					padding-right: 0px;
+				}
+
+				#etc {
+					width: 100%;
+					height: auto;
+					padding-left: 0px;
+					border-left: none;
+				}
+			}
+		}
+	}
+}
