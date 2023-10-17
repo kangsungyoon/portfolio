@@ -2,10 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { HashRouter } from 'react-router-dom';
+import { provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import youtubeReducer from './redux/youtubeSlice';
+
+//youtubeReducer 반환한 데이터를 youtube property 담아서 객체형태로 store에 등록
+// store에는 하나의 객체만 등록 가능하기 떄문에 여러개의 데이터 카테고리는 reducer로 통합해서 등록
+const store = configureStore({
+	reducer: {
+		youtube: youtubeReducer,
+	},
+});
 
 ReactDOM.render(
 	<HashRouter>
-		<App />
+		<provider store={store}>
+			<App />
+		</provider>
 	</HashRouter>,
 	document.getElementById('root')
 );
