@@ -64,3 +64,33 @@
 		}
 	}
 }
+
+.laptop {
+	.Gallery {
+		.picFrame {
+			article {
+				width: 32%;
+			}
+		}
+	}
+}
+
+.tablet {
+	.Gallery {
+		.picFrame {
+			article {
+				width: 48%;
+			}
+		}
+	}
+}
+
+.mobile {
+	.Gallery {
+		.picFrame {
+			article {
+				width: 100%;
+			}
+		}
+	}
+}
