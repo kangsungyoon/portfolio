@@ -1,14 +1,16 @@
-@import '../../../styles/Variable.scss';
-
 .Gallery {
+	.sbbs {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
 	.searchBox {
 		width: 30%;
 	}
 	.btnSet {
-		width: 100%;
+		width: 20%;
 		margin-bottom: 30px;
-		display: flex;
-		flex-wrap: wrap;
+		text-align: right;
 	}
 	.loading {
 		position: fixed;
@@ -58,34 +60,6 @@
 						font-size: 0.8rem;
 					}
 				}
-			}
-		}
-	}
-}
-@media screen and (max-width: $labtop) {
-	.Gallery {
-		.picFrame {
-			article {
-				width: 33.333%;
-			}
-		}
-	}
-}
-
-@media screen and (max-width: $tablet) {
-	.Gallery {
-		.picFrame {
-			article {
-				width: 50%;
-			}
-		}
-	}
-}
-@media screen and (max-width: $mobile) {
-	.Gallery {
-		.picFrame {
-			article {
-				width: 100%;
 			}
 		}
 	}

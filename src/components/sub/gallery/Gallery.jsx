@@ -1,278 +1,174 @@
 import Layout from '../../common/layout/Layout';
-import './Members.scss';
-import { useState, useRef } from 'react';
+import Modal from '../../common/modal/Modal';
+import './Gallery.scss';
+import { useState, useEffect, useRef } from 'react';
+import Masonry from 'react-masonry-component';
 
-export default function Members() {
-	const initVal = {
-		userid: '',
-		pwd1: '',
-		pwd2: '',
-		email: '',
-		gender: false,
-		interests: false,
-		edu: '',
-		comments: '',
-	};
-	const refCheckGroup = useRef(null);
-	const refRadioGroup = useRef(null);
-	const refSelGroup = useRef(null);
-	const [Val, setVal] = useState(initVal);
-	const [Errs, setErrs] = useState({});
+export default function Gallery() {
+	const refInput = useRef(null);
+	const refBtnSet = useRef(null);
+	const [Pics, setPics] = useState([]);
+	const [ActiveURL, setActiveURL] = useState('');
+	const [IsUser, setIsUser] = useState(true);
+	const [IsModal, setIsModal] = useState(false);
+	const my_id = '164021883@N04';
 
-	const resetForm = (e) => {
-		e.preventDefault();
-		setVal(initVal);
-		/*
-		const checks = refCheckGroup.current.querySelectorAll('input');
-		const radios = refRadioGroup.current.querySelectorAll('input');
-		checks.forEach((input) => (input.checked = false));
-		radios.forEach((input) => (input.checked = false));
-    */
-		[refCheckGroup, refRadioGroup].forEach((el) =>
-			el.current.querySelectorAll('input').forEach((input) => (input.checked = false))
-		);
-		refSelGroup.current.value = '';
-	};
+	//처음 마운트 데이터 호출 함수
+	const fetchData = async (opt) => {
+		let url = '';
+		const api_key = 'df39eea7518a5a4528b7bc5488282b35';
+		const method_interest = 'flickr.interestingness.getList';
+		const method_user = 'flickr.people.getPhotos';
+		const method_search = 'flickr.photos.search';
+		const num = 50;
 
-	const handleChange = (e) => {
-		const { name, value } = e.target;
-		setVal({ ...Val, [name]: value });
-	};
+		if (opt.type === 'interest') {
+			url = `https://www.flickr.com/services/rest/?method=${method_interest}&api_key=${api_key}&per_page=${num}&nojsoncallback=1&format=json`;
+		}
+		if (opt.type === 'user') {
+			url = `https://www.flickr.com/services/rest/?method=${method_user}&api_key=${api_key}&per_page=${num}&nojsoncallback=1&format=json&user_id=${opt.id}`;
+		}
+		if (opt.type === 'search') {
+			url = `https://www.flickr.com/services/rest/?method=${method_search}&api_key=${api_key}&per_page=${num}&nojsoncallback=1&format=json&tags=${opt.tags}`;
+		}
 
-	const handleRadio = (e) => {
-		const { name, checked } = e.target;
-		setVal({ ...Val, [name]: checked });
+		const data = await fetch(url);
+		const json = await data.json();
+
+		if (json.photos.photo.length === 0) {
+			return alert('해당 검색어의 결과값이 없습니다.');
+		}
+		setPics(json.photos.photo);
 	};
 
-	const handleCheck = (e) => {
-		const { name } = e.target;
-		let isChecked = false;
-		const inputs = e.target.parentElement.querySelectorAll('input');
-		inputs.forEach((input) => input.checked && (isChecked = true));
-		setVal({ ...Val, [name]: isChecked });
-	};
-
-	const check = (value) => {
-		const num = /[0-9]/; //0-9까지의 모든 값을 정규표현식으로 범위지정
-		const txt = /[a-zA-Z]/; //대소문자 구분없이 모든 문자 범위지정
-		const spc = /[!@#$%^*()_]/; //모든 특수문자 지정
-		const errs = {};
-
-		if (value.userid.length < 5) {
-			errs.userid = '아이디는 최소 5글자 이상 입력하세요.';
-		}
-
-		//비밀번호 인증 (5글자 이상, 문자, 숫자, 특수문자 모두 포함)
-		if (
-			value.pwd1.length < 5 ||
-			!num.test(value.pwd1) ||
-			!txt.test(value.pwd1) ||
-			!spc.test(value.pwd1)
-		) {
-			errs.pwd1 = '비밀번호는 5글자이상, 문자,숫자,특수문자를 모두 포함하세요';
-		}
-
-		//비밀번호 재확인 인증
-		if (value.pwd1 !== value.pwd2 || !value.pwd2) {
-			errs.pwd2 = '2개의 비밀번호를 같게 입력하세요.';
-		}
-
-		//이메일 인증
-		if (!value.email || !/@/.test(value.email)) {
-			errs.email = '이메일은 무조건 @를 포함해야 합니다.';
-		} else {
-			const [forward, backward] = value.email.split('@');
-			if (!forward || !backward) {
-				errs.email = '이메일에 @앞뒤로 문자값이 있어야 합니다.';
-			} else {
-				const [forward, backward] = value.email.split('.');
-				if (!forward || !backward) {
-					errs.email = '이메일 . 앞뒤로 문자값이 있어야 합니다.';
-				}
-			}
-		}
-
-		//성별인증
-		if (!value.gender) {
-			errs.gender = '성별은 필수 체크항목입니다.';
-		}
-
-		//관심사인증
-		if (!value.interests) {
-			errs.interests = '관심사를 하나이상 체크해주세요.';
-		}
-
-		//학력 인증
-		if (!value.edu) {
-			errs.edu = '학력을 선택하세요.';
-		}
-		//남기는말 인증
-		if (value.comments.length < 10) {
-			errs.comments = '남기는말은 10글자 이상 입력하세요.';
-		}
-		return errs;
-	};
-
+	//submit이벤트 발생시 실행할 함수
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setIsUser(false);
 
-		if (Object.keys(check(Val)).length === 0) {
-			alert('인증통과');
-		} else {
-			setErrs(check(Val));
+		const btns = refBtnSet.current.querySelectorAll('button');
+		btns.forEach((btn) => btn.classList.remove('on'));
+
+		if (refInput.current.value.trim() === '') {
+			return alert('검색어를 입력하세요.');
 		}
+
+		fetchData({ type: 'search', tags: refInput.current.value });
+		refInput.current.value = '';
 	};
 
+	//myGallery 클릭 이벤트 발생시 실행할 함수
+	const handleClickMy = (e) => {
+		setIsUser(true);
+		if (e.target.classList.contains('on')) return;
+
+		const btns = refBtnSet.current.querySelectorAll('button');
+		btns.forEach((btn) => btn.classList.remove('on'));
+		e.target.classList.add('on');
+
+		fetchData({ type: 'user', id: my_id });
+	};
+
+	//Interest Gallery 클릭 이벤트 발생시 실행할 함수
+	const handleClickInterest = (e) => {
+		setIsUser(false);
+		if (e.target.classList.contains('on')) return;
+
+		const btns = refBtnSet.current.querySelectorAll('button');
+		btns.forEach((btn) => btn.classList.remove('on'));
+		e.target.classList.add('on');
+
+		fetchData({ type: 'interest' });
+	};
+
+	//profile 아이디 클릭시 실행할 함수
+	const handleClickProfile = (e) => {
+		if (IsUser) return;
+		fetchData({ type: 'user', id: e.target.innerText });
+		setIsUser(true);
+	};
+
+	useEffect(() => {
+		fetchData({ type: 'user', id: my_id });
+	}, []);
+
 	return (
-		<Layout title={'Members'}>
-			<form onSubmit={handleSubmit}>
-				<fieldset>
-					<legend className='h'>회원가입 폼 양식</legend>
-					<table border='1'>
-						<tbody>
-							{/* userid */}
-							<tr>
-								<th scope='row'>
-									<label htmlFor='userid'>userid</label>
-								</th>
-								<td>
-									<input
-										type='text'
-										id='userid'
-										name='userid'
-										value={Val.userid}
-										onChange={handleChange}
-									/>
-									{Errs.userid && <p>{Errs.userid}</p>}
-								</td>
-							</tr>
+		<>
+			<Layout title={'Gallery'}>
+				<div className='sbbs'>
+					<div className='searchBox'>
+						<form onSubmit={handleSubmit}>
+							<input ref={refInput} type='text' placeholder='검색어를 입력하세요' />
+							<button>검색</button>
+						</form>
+					</div>
 
-							{/* password */}
-							<tr>
-								<th scope='row'>
-									<label htmlFor='pwd1'>password</label>
-								</th>
-								<td>
-									<input
-										type='password'
-										id='pwd1'
-										name='pwd1'
-										value={Val.pwd1}
-										onChange={handleChange}
-									/>
-									{Errs.pwd1 && <p>{Errs.pwd1}</p>}
-								</td>
-							</tr>
+					<div className='btnSet' ref={refBtnSet}>
+						<button className='on' onClick={handleClickMy}>
+							My Gallery
+						</button>
 
-							{/* re password */}
-							<tr>
-								<th scope='row'>
-									<label htmlFor='pwd2'>re-password</label>
-								</th>
-								<td>
-									<input
-										type='password'
-										id='pwd2'
-										name='pwd2'
-										value={Val.pwd2}
-										onChange={handleChange}
-									/>
-									{Errs.pwd2 && <p>{Errs.pwd2}</p>}
-								</td>
-							</tr>
+						<button onClick={handleClickInterest}>Interest Gallery</button>
+					</div>
+				</div>
+				<div className='picFrame'>
+					<Masonry
+						elementType={'div'}
+						options={{ transitionDuration: '0.5s' }}
+						disableImagesLoaded={false}
+						updateOnEachImageLoad={false}
+					>
+						{Pics.map((data, idx) => {
+							return (
+								<article key={idx}>
+									<div className='inner'>
+										<img
+											className='pic'
+											src={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_m.jpg`}
+											alt={`https://live.staticflickr.com/${data.server}/${data.id}_${data.secret}_b.jpg`}
+											onClick={(e) => {
+												setActiveURL(e.target.getAttribute('alt'));
+												setIsModal(true);
+											}}
+										/>
+										<h2>{data.title}</h2>
 
-							{/* email */}
-							<tr>
-								<th scope='row'>
-									<label htmlFor='email'>e-mail</label>
-								</th>
-								<td>
-									<input
-										type='text'
-										id='email'
-										name='email'
-										value={Val.email}
-										onChange={handleChange}
-									/>
-									{Errs.email && <p>{Errs.email}</p>}
-								</td>
-							</tr>
+										<div className='profile'>
+											<img
+												src={`http://farm${data.farm}.staticflickr.com/${data.server}/buddyicons/${data.owner}.jpg`}
+												alt={data.owner}
+												onError={(e) => {
+													e.target.setAttribute(
+														'src',
+														'https://www.flickr.com/images/buddyicon.gif'
+													);
+												}}
+											/>
+											<span onClick={handleClickProfile}>{data.owner}</span>
+										</div>
+									</div>
+								</article>
+							);
+						})}
+					</Masonry>
+				</div>
+			</Layout>
 
-							{/* gender */}
-							<tr>
-								<th>gender</th>
-								<td ref={refRadioGroup}>
-									<label htmlFor='female'>female</label>
-									<input type='radio' name='gender' id='female' onChange={handleRadio} />
-
-									<label htmlFor='male'>male</label>
-									<input type='radio' name='gender' id='male' onChange={handleRadio} />
-									{Errs.gender && <p>{Errs.gender}</p>}
-								</td>
-							</tr>
-
-							{/* interests */}
-							<tr>
-								<th>interests</th>
-								<td ref={refCheckGroup}>
-									<label htmlFor='sports'>sports</label>
-									<input type='checkbox' id='sports' name='interests' onChange={handleCheck} />
-
-									<label htmlFor='game'>game</label>
-									<input type='checkbox' id='game' name='interests' onChange={handleCheck} />
-
-									<label htmlFor='music'>music</label>
-									<input type='checkbox' id='music' name='interests' onChange={handleCheck} />
-									{Errs.interests && <p>{Errs.interests}</p>}
-								</td>
-							</tr>
-
-							{/* education */}
-							<tr>
-								<th>
-									<label htmlFor='edu'>Education</label>
-								</th>
-								<td>
-									<select name='edu' id='edu' onChange={handleChange} ref={refSelGroup}>
-										<option value=''>최종학력 선택하세요</option>
-										<option value='elementary-school'>초등학교 졸업</option>
-										<option value='middle-school'>중학교 졸업</option>
-										<option value='high-school'>고등학교 졸업</option>
-										<option value='college'>대학교 졸업</option>
-									</select>
-									{Errs.edu && <p>{Errs.edu}</p>}
-								</td>
-							</tr>
-
-							{/* comments */}
-							<tr>
-								<th>
-									<label htmlFor='comments'>comments</label>
-								</th>
-								<td>
-									<textarea
-										name='comments'
-										id=''
-										cols='30'
-										rows='3'
-										value={Val.comments}
-										onChange={handleChange}
-									></textarea>
-									{Errs.comments && <p>{Errs.comments}</p>}
-								</td>
-							</tr>
-
-							{/* btnSet */}
-							<tr>
-								<th colSpan='2'>
-									<input type='reset' value='cancel' onClick={resetForm} />
-									<input type='submit' value='send' />
-								</th>
-							</tr>
-						</tbody>
-					</table>
-				</fieldset>
-			</form>
-		</Layout>
+			{IsModal && (
+				<Modal setIsModal={setIsModal}>
+					<img src={ActiveURL} alt='img' />
+				</Modal>
+			)}
+		</>
 	);
 }
+
+/*
+	클릭한 버튼을 또 클릭했을때 같은 데이터를 불필요하게 또다시 fetching요청하지 않도록
+	클릭한 버튼에 on이 붙어있을때 함수 호출을 강제 중지
+
+	현재 출력되는 갤러리 방식이 User type 갤러리일때 같은 사용자의 갤러리가 보이는 형태이므로
+	사용자 아이디를 클릭하게되면 같은 데이터 요청을 보내게됨
+	--- 사용자 타입의 갤러리를 호출할때마다 IsUser state값을 true로 변경해서 
+	----이벤트가 발생할때마다 IsUser값이 true 사용자 아이디 클릭 이벤트 핸들러 제거
+*/

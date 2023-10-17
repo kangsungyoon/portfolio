@@ -33,102 +33,104 @@
 			text-shadow: -1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black;
 		}
 	}
-	.lineT {
-		width: 50%;
-		border-right: thick solid #000;
-
-		.loremTxt {
-			width: 100%;
-			margin-top: 100px;
-		}
-		.loremTT {
-			width: 100%;
-		}
-	}
-
-	#mailBox {
-		width: 100%;
-		margin-bottom: 100px;
-		text-align: left;
+	.ft {
 		display: flex;
 		flex-wrap: wrap;
-		margin-left: 667px;
-		padding: 100px;
-		border-left: thick solid #000;
 
-		.upper {
-			width: 100px;
-			display: flex;
-			margin-bottom: 100px;
-			justify-content: space-between;
-			margin-right: 50px;
+		.lineT {
+			width: 50%;
+			border-right: thick solid #000;
 
-			label {
-				font: bold 1rem/1 'arial';
-				color: #555;
-				margin-right: 20px;
-				position: relative;
-				top: 20px;
-				margin-right: 50px;
-			}
-
-			input[type='text'],
-			input[type='email'] {
-				border: none;
-				padding: 10px 20px;
-				border-bottom: 1px solid #555;
-				margin-right: 50px;
-				outline: none;
-				transition: 0.5s;
-
-				&:focus {
-					background: lightblue;
-				}
-			}
-		}
-		.lower {
-			width: 100%;
-			margin-bottom: 10px;
-			margin-right: 50px;
-
-			label {
-				display: block;
-				margin-bottom: 5px;
-				font: bold 1rem/1 'arial';
-				color: #555;
-			}
-			textarea {
+			.loremTxt {
 				width: 100%;
-				padding: 10px;
-				border: none;
-				border-bottom: 1px solid #555;
-				margin-right: 50px;
-				resize: none;
-				outline: none;
-				transition: 0.5s;
-
-				&:focus {
-					background: lightblue;
-				}
+				margin-top: 100px;
+			}
+			.loremTT {
+				width: 100%;
 			}
 		}
 
-		// .btnSet {
-		// 	width: 100%;
-		// 	padding-right: 20px;
-		// 	display: flex;
-		// 	gap: 50px;
+		#mailBox {
+			width: 30%;
+			margin-bottom: 100px;
+			text-align: left;
+			margin-left: 30px;
+			margin-top: 100px;
 
-		// 	input {
-		// 		display: block;
-		// 		height: 40px;
-		// 		background: transparent;
-		// 		border: 1px solid #666;
-		// 		font: 1rem/40px 'arial';
-		// 		color: #555;
-		// 		text-align: center;
-		// 	}
-		// }
+			.upper {
+				width: 100px;
+				display: flex;
+				margin-bottom: 100px;
+				justify-content: space-between;
+				margin-right: 50px;
+
+				label {
+					font: bold 1rem/1 'arial';
+					color: #555;
+					margin-right: 20px;
+					position: relative;
+					top: 20px;
+					margin-right: 50px;
+				}
+
+				input[type='text'],
+				input[type='email'] {
+					border: none;
+					padding: 10px 20px;
+					border-bottom: 1px solid #555;
+					margin-right: 50px;
+					outline: none;
+					transition: 0.5s;
+
+					&:focus {
+						background: lightblue;
+					}
+				}
+			}
+			.lower {
+				width: 100%;
+				margin-bottom: 10px;
+				margin-right: 50px;
+
+				label {
+					display: block;
+					margin-bottom: 5px;
+					font: bold 1rem/1 'arial';
+					color: #555;
+				}
+				textarea {
+					width: 100%;
+					padding: 10px;
+					border: none;
+					border-bottom: 1px solid #555;
+					margin-right: 50px;
+					resize: none;
+					outline: none;
+					transition: 0.5s;
+
+					&:focus {
+						background: lightblue;
+					}
+				}
+			}
+
+			// .btnSet {
+			// 	width: 100%;
+			// 	padding-right: 20px;
+			// 	display: flex;
+			// 	gap: 50px;
+
+			// 	input {
+			// 		display: block;
+			// 		height: 40px;
+			// 		background: transparent;
+			// 		border: 1px solid #666;
+			// 		font: 1rem/40px 'arial';
+			// 		color: #555;
+			// 		text-align: center;
+			// 	}
+			// }
+		}
 	}
 	.conBox {
 		width: 100%;

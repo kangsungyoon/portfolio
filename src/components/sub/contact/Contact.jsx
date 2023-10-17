@@ -157,44 +157,46 @@ export default function Contact() {
 				<h2>Contact</h2>
 			</div>
 
-			<div className='lineT'>
-				<div className='loremTxt'>
-					<h2>Lorem, ipsum.</h2>
+			<div className='ft'>
+				<div className='lineT'>
+					<div className='loremTxt'>
+						<h2>Lorem, ipsum.</h2>
+					</div>
+					<div className='loremTT'>
+						<p>
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, odio quaerat!
+							<br />
+							Impedit tempore modi sapiente consequuntur, <br /> repellat aliquam ullam sed mollitia
+							deleniti alias velit nemo ipsam <br /> quas voluptates fugiat cum?
+						</p>
+					</div>
 				</div>
-				<div className='loremTT'>
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, odio quaerat!
-						<br />
-						Impedit tempore modi sapiente consequuntur, <br /> repellat aliquam ullam sed mollitia
-						deleniti alias velit nemo ipsam <br /> quas voluptates fugiat cum?
-					</p>
+
+				<div id='mailBox'>
+					<form ref={form} onSubmit={sendEmail}>
+						<div className='upper'>
+							<span>
+								<label>Name</label>
+								<input type='text' name='user_name' className='nameEl' />
+							</span>
+
+							<span>
+								<label>Email</label>
+								<input type='email' name='user_email' className='emailEl' />
+							</span>
+						</div>
+
+						<div className='lower'>
+							<label>Message</label>
+							<textarea name='message' className='msgEl' />
+						</div>
+
+						<div className='btnSet'>
+							<input type='reset' value='Cancel' />
+							<input type='submit' value='Send' />
+						</div>
+					</form>
 				</div>
-			</div>
-
-			<div id='mailBox'>
-				<form ref={form} onSubmit={sendEmail}>
-					<div className='upper'>
-						<span>
-							<label>Name</label>
-							<input type='text' name='user_name' className='nameEl' />
-						</span>
-
-						<span>
-							<label>Email</label>
-							<input type='email' name='user_email' className='emailEl' />
-						</span>
-					</div>
-
-					<div className='lower'>
-						<label>Message</label>
-						<textarea name='message' className='msgEl' />
-					</div>
-
-					<div className='btnSet'>
-						<input type='reset' value='Cancel' />
-						<input type='submit' value='Send' />
-					</div>
-				</form>
 			</div>
 			<section className='conBox'>
 				<div>
