@@ -69,3 +69,41 @@
 		}
 	}
 }
+
+//tablet
+.tablet,
+.mobile {
+	.Department {
+		.container {
+			flex-wrap: wrap;
+
+			.infoBox {
+				width: 100%;
+				height: 200px;
+				margin-bottom: 50px;
+			}
+			.memberBox {
+				width: 100%;
+
+				article {
+					width: 48%;
+				}
+			}
+		}
+	}
+}
+
+//mobile
+.mobile {
+	.Department {
+		.container {
+			.memberBox {
+				width: 100%;
+
+				article {
+					width: 100%;
+				}
+			}
+		}
+	}
+}

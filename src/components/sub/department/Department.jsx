@@ -54,9 +54,9 @@ export default function Department() {
 							<article key={idx}>
 								<div className='pic'>
 									<img src={`${path}/img/${member.pic}`} alt={member.name} />
+									<h2>{member.name}</h2>
+									<p>{member.position}</p>
 								</div>
-								<h2>{member.name}</h2>
-								<p>{member.position}</p>
 							</article>
 						);
 					})}
