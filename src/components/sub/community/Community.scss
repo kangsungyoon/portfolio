@@ -3,7 +3,7 @@
 		.inputBox {
 			width: 100%;
 			border: 1px solid #aaa;
-			padding: 50px;
+			padding: 30px;
 			margin-bottom: 50px;
 
 			input[type='text'],
@@ -28,6 +28,9 @@
 					cursor: pointer;
 				}
 			}
+			.tty {
+				margin-top: 20px;
+			}
 		}
 
 		.showBox {
@@ -39,6 +42,7 @@
 				background: #fff;
 				padding: 30px;
 				margin-bottom: 40px;
+				width: 100%;
 				display: flex;
 				justify-content: space-between;
 				align-content: center;

@@ -1,6 +1,7 @@
 import Layout from '../../common/layout/Layout';
 import './Community.scss';
 import { useRef, useState, useEffect } from 'react';
+import { FaExclamationTriangle } from 'react-icons/fa';
 
 export default function Community() {
 	//로컬데이터의 값을 parsing해서 반환하는 함수
@@ -99,11 +100,15 @@ export default function Community() {
 				<input ref={refInput} type='text' placeholder='제목을 입력하세요.' />
 				<br />
 				<textarea ref={refTextarea} cols='30' rows='3' placeholder='본문을 입력하세요.'></textarea>
-
 				<nav className='btnSet'>
 					<button onClick={resetForm}>cancel</button>
 					<button onClick={createPost}>write</button>
 				</nav>
+				<div className='tty'>
+					<FaExclamationTriangle className='bars' fontSize={22} color={'#333'} /> &nbsp; &nbsp; If
+					you make a post on the communilty bulletin board that does not meet its purpose, the post
+					may be deleted by the administrator.
+				</div>
 			</div>
 
 			<div className='showBox'>

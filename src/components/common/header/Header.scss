@@ -23,6 +23,10 @@
 			}
 		}
 	}
+
+	.bars {
+		display: none;
+	}
 }
 
 .header.main {
@@ -42,6 +46,9 @@
 	.header {
 		ul {
 			display: none;
+		}
+		.bars {
+			display: block;
 		}
 	}
 }

@@ -1,42 +1,66 @@
 import Layout from '../../common/layout/Layout';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './Department.scss';
 const path = process.env.PUBLIC_URL;
 
 export default function Department() {
+	const refSliderWrap = useRef(null);
 	const [Department, setDepartment] = useState([]);
 
 	useEffect(() => {
 		fetch(`${path}/DB/department.json`)
-			.then((data) => data.json()) //fetch문에 대한 응답 성공시
-			.catch((err) => console.log(err)) //fetch문에 대한 응답 실패시
+			.then((data) => data.json())
+			.catch((err) => console.log(err))
 			.then((json) => {
-				setDepartment(json.members); //json데이터 변환에 대한 응답 성공시
+				setDepartment(json.members);
 			})
-			.catch((err) => console.log(err)); //json데이터 변환에 대한 응답 실패시
+			.catch((err) => console.log(err));
 	}, []);
+
+	const next = () => {
+		const wrap = refSliderWrap.current;
+		wrap.append(wrap.firstElementChild);
+	};
+	const prev = () => {
+		const wrap = refSliderWrap.current;
+		wrap.prepend(wrap.lastElementChild);
+	};
 
 	return (
 		<Layout title={'Department'}>
-			<p className='woww'>
-				Lorem ipsum dolor, sit amet consectetur adipisicing elit. <br />
-				Magnam nulla quae rem et perspiciatis illo. Aperiam,
-				<br />
-				ad! Quae iure est temporibus adipisci odit nulla, <br />
-				deserunt ipsum eveniet minus cumque repellat!
-			</p>
-			<div className='memberBox'>
-				{Department.map((member, idx) => {
-					return (
-						<article key={idx}>
-							<div className='pic'>
-								<img src={`${path}/img/${member.pic}`} alt={member.name} />
+			{/* <div className='sliderBox'>
+				<button className='prev' onClick={prev}>
+					prev
+				</button>
+				<button className='next' onClick={next}>
+					next
+				</button>
+
+				<section className='sliderWrap' ref={refSliderWrap}>
+					<article>1</article>
+					<article>2</article>
+					<article>3</article>
+					<article>4</article>
+					<article>5</article>
+				</section>
+			</div> */}
+
+			<div className='container'>
+				<div className='infoBox'></div>
+
+				<div className='memberBox'>
+					{Department.map((member, idx) => {
+						return (
+							<article key={idx}>
+								<div className='pic'>
+									<img src={`${path}/img/${member.pic}`} alt={member.name} />
+								</div>
 								<h2>{member.name}</h2>
 								<p>{member.position}</p>
-							</div>
-						</article>
-					);
-				})}
+							</article>
+						);
+					})}
+				</div>
 			</div>
 		</Layout>
 	);
