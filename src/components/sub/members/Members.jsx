@@ -22,12 +22,7 @@ export default function Members() {
 	const resetForm = (e) => {
 		e.preventDefault();
 		setVal(initVal);
-		/*
-		const checks = refCheckGroup.current.querySelectorAll('input');
-		const radios = refRadioGroup.current.querySelectorAll('input');
-		checks.forEach((input) => (input.checked = false));
-		radios.forEach((input) => (input.checked = false));
-    */
+
 		[refCheckGroup, refRadioGroup].forEach((el) =>
 			el.current.querySelectorAll('input').forEach((input) => (input.checked = false))
 		);
@@ -133,7 +128,7 @@ export default function Members() {
 							{/* userid */}
 							<tr>
 								<th scope='row'>
-									<label htmlFor='userid'>userid</label>
+									<label htmlFor='userid'>Userid</label>
 								</th>
 								<td>
 									<input
@@ -142,6 +137,7 @@ export default function Members() {
 										name='userid'
 										value={Val.userid}
 										onChange={handleChange}
+										placeholder='아이디를 입력하세요.'
 									/>
 									{Errs.userid && <p>{Errs.userid}</p>}
 								</td>
@@ -150,7 +146,7 @@ export default function Members() {
 							{/* password */}
 							<tr>
 								<th scope='row'>
-									<label htmlFor='pwd1'>password</label>
+									<label htmlFor='pwd1'>Password</label>
 								</th>
 								<td>
 									<input
@@ -159,6 +155,7 @@ export default function Members() {
 										name='pwd1'
 										value={Val.pwd1}
 										onChange={handleChange}
+										placeholder='비밀번호를 입력하세요.'
 									/>
 									{Errs.pwd1 && <p>{Errs.pwd1}</p>}
 								</td>
@@ -167,7 +164,7 @@ export default function Members() {
 							{/* re password */}
 							<tr>
 								<th scope='row'>
-									<label htmlFor='pwd2'>re-password</label>
+									<label htmlFor='pwd2'>Re-Password</label>
 								</th>
 								<td>
 									<input
@@ -176,6 +173,7 @@ export default function Members() {
 										name='pwd2'
 										value={Val.pwd2}
 										onChange={handleChange}
+										placeholder='비밀번호를 재입력하세요.'
 									/>
 									{Errs.pwd2 && <p>{Errs.pwd2}</p>}
 								</td>
@@ -184,7 +182,7 @@ export default function Members() {
 							{/* email */}
 							<tr>
 								<th scope='row'>
-									<label htmlFor='email'>e-mail</label>
+									<label htmlFor='email'>E-mail</label>
 								</th>
 								<td>
 									<input
@@ -193,6 +191,7 @@ export default function Members() {
 										name='email'
 										value={Val.email}
 										onChange={handleChange}
+										placeholder='이메일주소를 입력하세요.'
 									/>
 									{Errs.email && <p>{Errs.email}</p>}
 								</td>
@@ -200,7 +199,7 @@ export default function Members() {
 
 							{/* gender */}
 							<tr>
-								<th>gender</th>
+								<th>Gender</th>
 								<td ref={refRadioGroup}>
 									<label htmlFor='female'>female</label>
 									<input type='radio' name='gender' id='female' onChange={handleRadio} />
@@ -213,7 +212,7 @@ export default function Members() {
 
 							{/* interests */}
 							<tr>
-								<th>interests</th>
+								<th>Interests</th>
 								<td ref={refCheckGroup}>
 									<label htmlFor='sports'>sports</label>
 									<input type='checkbox' id='sports' name='interests' onChange={handleCheck} />
@@ -247,7 +246,7 @@ export default function Members() {
 							{/* comments */}
 							<tr>
 								<th>
-									<label htmlFor='comments'>comments</label>
+									<label htmlFor='comments'>Comments</label>
 								</th>
 								<td>
 									<textarea
@@ -257,6 +256,7 @@ export default function Members() {
 										rows='3'
 										value={Val.comments}
 										onChange={handleChange}
+										placeholder='남기는 말을 입력하세요.'
 									></textarea>
 									{Errs.comments && <p>{Errs.comments}</p>}
 								</td>
