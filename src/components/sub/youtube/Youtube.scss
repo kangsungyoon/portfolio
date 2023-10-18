@@ -60,18 +60,16 @@
 			.wrab {
 				flex-wrap: wrap;
 				article {
+					width: 48%;
 					.picBox {
-						width: 100%;
 						margin-top: 30px;
 					}
 					.titBox {
-						width: 100%;
 						margin-top: 150px;
 					}
 
 					.conBox {
 						width: 100%;
-						margin-bottom: 1000px;
 					}
 				}
 			}
@@ -81,20 +79,7 @@
 		.Youtube {
 			.content {
 				article {
-					flex-wrap: wrap;
-					.picBox {
-						width: 100%;
-						margin-top: 30px;
-					}
-					.titBox {
-						width: 100%;
-						margin-top: 150px;
-					}
-
-					.conBox {
-						width: 100%;
-						margin-bottom: 1000px;
-					}
+					width: 100%;
 				}
 			}
 		}
