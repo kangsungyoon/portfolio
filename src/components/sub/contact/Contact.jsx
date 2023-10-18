@@ -12,13 +12,8 @@ export default function Contact() {
 	const [Index, setIndex] = useState(0);
 	const [IsMap, setIsMap] = useState(true);
 
-	//kakao api를 cdn방식으로 불러오고 있기 때문에 리액트 컴포넌트가 실행되면 window객체에서 직접 비구조화 할당으로 kakao객체를 뽑아옴
 	const { kakao } = window;
-	//첫번째 지도를 출력하기 위한 객체정보
 
-	//지도정보데이터를 객체형식으로 구조화한 다음에 데이터 기반으로 자동 지도화면이 생성되도록 만들었다.
-	//데이터정보가 많아질때를 대비해서 유지보수에 최적화되도록 코드 개선
-	//해당 정보값은 자주 바뀌는값이 아니기 때문에 굳이 state에 담아서 불필요한 재랜더링을 막기위해 useRef에 담아놨다
 	const info = useRef([
 		{
 			title: '삼성역 코엑스',
@@ -43,7 +38,6 @@ export default function Contact() {
 		},
 	]);
 
-	//위의 정보값을 활용한 마커 객체 생성
 	const marker = new kakao.maps.Marker({
 		position: info.current[Index].latlng,
 		image: new kakao.maps.MarkerImage(
@@ -53,22 +47,18 @@ export default function Contact() {
 		),
 	});
 
-	//지도위치를 중심으로 이동시키는 핸들러 함수 제작
 	const setCenter = () => {
 		// 지도 중심을 이동 시킵니다
 		instance.current.setCenter(info.current[Index].latlng);
 	};
 
 	useEffect(() => {
-		//Index값이 변경될때마다 새로운 지도 레이어가 중첩되므로
-		//일단은 기존 map안의 모든 요소를 없애서 초기화
 		map.current.innerHTML = '';
-		//객체 정보를 활용한 지도 객체 생성
+
 		instance.current = new kakao.maps.Map(map.current, {
 			center: info.current[Index].latlng,
 			level: 1,
 		});
-		//마커 객체에 지도 객체 연결
 		marker.setMap(instance.current);
 
 		//지도 타입 변경 UI추가
