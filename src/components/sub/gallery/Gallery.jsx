@@ -12,7 +12,6 @@ import { open } from '../../../redux/modalSlice';
 export default function Gallery() {
 	const dispatch = useDispatch();
 	const Pics = useSelector((store) => store.flickr.data);
-	const IsModal = useSelector((store) => store.modal.isOpen);
 	const refInput = useRef(null);
 	const refBtnSet = useRef(null);
 	const [ActiveURL, setActiveURL] = useState('');
@@ -69,22 +68,21 @@ export default function Gallery() {
 	return (
 		<>
 			<Layout title={'Gallery'}>
-				<div className='sbbs'>
-					<div className='searchBox'>
-						<form onSubmit={handleSubmit}>
-							<input ref={refInput} type='text' placeholder='검색어를 입력하세요' />
-							<button>검색</button>
-						</form>
-					</div>
-
-					<div className='btnSet' ref={refBtnSet}>
-						<button className='on' onClick={handleClickMy}>
-							My Gallery
-						</button>
-
-						<button onClick={handleClickInterest}>Interest Gallery</button>
-					</div>
+				<div className='searchBox'>
+					<form onSubmit={handleSubmit}>
+						<input ref={refInput} type='text' placeholder='검색어를 입력하세요' />
+						<button>검색</button>
+					</form>
 				</div>
+
+				<div className='btnSet' ref={refBtnSet}>
+					<button className='on' onClick={handleClickMy}>
+						My Gallery
+					</button>
+
+					<button onClick={handleClickInterest}>Interest Gallery</button>
+				</div>
+
 				<div className='picFrame'>
 					<Masonry
 						elementType={'div'}
@@ -128,11 +126,9 @@ export default function Gallery() {
 				</div>
 			</Layout>
 
-			{IsModal && (
-				<Modal>
-					<img src={ActiveURL} alt='img' />
-				</Modal>
-			)}
+			<Modal>
+				<img src={ActiveURL} alt='img' />
+			</Modal>
 		</>
 	);
 }
