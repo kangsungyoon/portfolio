@@ -20,18 +20,12 @@ function Btns() {
 		const btns = refBtns.current.querySelectorAll('li');
 		const scroll = window.scrollY;
 
-		if (scroll >= pos.current[0]) {
-			for (let btn of btns) btn.classList.remove('on');
-			btns[0].classList.add('on');
-		}
-		if (scroll >= pos.current[1]) {
-			for (let btn of btns) btn.classList.remove('on');
-			btns[1].classList.add('on');
-		}
-		if (scroll >= pos.current[2]) {
-			for (let btn of btns) btn.classList.remove('on');
-			btns[2].classList.add('on');
-		}
+		pos.current.forEach((el, idx) => {
+			if (scroll >= el) {
+				for (let btn of btns) btn.classList.remove('on');
+				btns[idx].classList.add('on');
+			}
+		});
 	};
 
 	useEffect(() => {
