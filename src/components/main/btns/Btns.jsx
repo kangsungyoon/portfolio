@@ -10,6 +10,7 @@ function Btns() {
 
 	//컴포넌트 마운트시 myScroll클래스의 모든 섹션의 세로위치값을 배열에 저장하는 함수
 	const getPos = () => {
+		pos.current = [];
 		const secs = document.body.querySelectorAll('.myScroll');
 		for (let sec of secs) pos.current.push(sec.offsetTop);
 		console.log(pos.current);
@@ -30,9 +31,11 @@ function Btns() {
 
 	useEffect(() => {
 		getPos();
+		window.addEventListener('resize', getPos);
 		window.addEventListener('scroll', activation);
 
 		return () => {
+			window.removeEventListener('resize', getPos);
 			window.removeEventListener('scroll', activation);
 		};
 	}, []);
