@@ -7,9 +7,9 @@ import { useDispatch } from 'react-redux';
 export default function Header({ isMain }) {
 	const dispatch = useDispatch();
 	return (
-		<header className='header'>
+		<header className='header  myScroll'>
 			<h1>
-				<Link to='/'>LOGO</Link>
+				<Link to='/'>DCODELAB</Link>
 			</h1>
 
 			<ul>
