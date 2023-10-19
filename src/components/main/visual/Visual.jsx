@@ -10,7 +10,7 @@ function Visual() {
 	console.log(data);
 
 	return (
-		<section className='visual'>
+		<section className='visual myScroll'>
 			<div className='titBox'>
 				<ul>
 					{data.map((tit, idx) => {
@@ -18,7 +18,7 @@ function Visual() {
 						return (
 							<li key={idx} className={idx === Index ? 'on' : ''}>
 								<h3>{tit.snippet.title}</h3>
-
+								<p>{tit.snippet.description.substr(0, 300) + '...'}</p>
 								<button>View Deatil</button>
 							</li>
 						);
@@ -26,12 +26,22 @@ function Visual() {
 				</ul>
 			</div>
 			<Swiper
-				slidesPerView={3}
-				spaceBetween={50}
+				slidesPerView={1}
+				spaceBetween={0}
 				loop={true}
 				centeredSlides={true}
-				//swiper loop 기능을 적용하는 순간 실제 연결되어 있는 패널갯수보다 동적으로 패널이 생성되면서 일반적인 방법으로는 활성화패널의 순서값을 구할 수 없기 때문에 아래와 같은 방법으로 순서값을 구함
 				onSlideChange={(el) => setIndex(el.realIndex)}
+				breakpoints={{
+					//1000px보다 브라우저폭이 커졌을때
+					1000: {
+						slidesPerView: 2,
+						spaceBetween: 50,
+					},
+					1400: {
+						slidesPerView: 3,
+						spaceBetween: 50,
+					},
+				}}
 			>
 				{data.map((vid, idx) => {
 					if (idx >= 5) return null;
