@@ -74,13 +74,14 @@ export default function Gallery() {
 						<button>검색</button>
 					</form>
 				</div>
+				<div className='sbbs'>
+					<div className='btnSet' ref={refBtnSet}>
+						<button className='on' onClick={handleClickMy}>
+							My Gallery
+						</button>
 
-				<div className='btnSet' ref={refBtnSet}>
-					<button className='on' onClick={handleClickMy}>
-						My Gallery
-					</button>
-
-					<button onClick={handleClickInterest}>Interest Gallery</button>
+						<button onClick={handleClickInterest}>Interest Gallery</button>
+					</div>
 				</div>
 
 				<div className='picFrame'>
