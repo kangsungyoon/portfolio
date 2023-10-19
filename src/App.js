@@ -16,6 +16,7 @@ import { fetchYoutube } from './redux/youtubeSlice';
 import { fetchFlickr } from './redux/flickrSlice';
 import { useDispatch } from 'react-redux';
 import Menu from './components/common/menu/Menu';
+import Footer from './components/common/footer/Footer';
 
 function App() {
 	const dispatch = useDispatch();
@@ -43,6 +44,7 @@ function App() {
 			<Route path='/contact' component={Contact} />
 			<Route path='/community' component={Community} />
 			<Route path='/detail/:id' component={Detail} />
+			<Footer />
 			<Menu />
 		</main>
 	);
