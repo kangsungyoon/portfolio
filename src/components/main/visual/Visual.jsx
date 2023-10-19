@@ -1,19 +1,35 @@
 import './Visual.scss';
 import { useSelector } from 'react-redux';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 function Visual() {
 	const { data } = useSelector((store) => store.youtube);
+	console.log(data);
+
 	return (
 		<section className='visual'>
-			<h2>Visual</h2>
-			{data.map((vid, idx) => {
-				if (idx >= 5) return null;
-				return (
-					<article key={idx}>
-						<h2>{vid.snippet.title}</h2>
-					</article>
-				);
-			})}
+			<div className='titBox'>
+				<ul>
+					{data.map((tit, idx) => {
+						if (idx >= 5) return null;
+						return <li key={idx}>{tit.snippet.title}</li>;
+					})}
+				</ul>
+			</div>
+			<Swiper slidesPerView={3} spaceBetween={50} loop={true} centeredSlides={true}>
+				{data.map((vid, idx) => {
+					if (idx >= 5) return null;
+					return (
+						<SwiperSlide key={idx}>
+							<div className='pic'>
+								<img src={vid.snippet.thumbnails.maxres.url} alt={vid.title} />
+								<img src={vid.snippet.thumbnails.maxres.url} alt={vid.title} />
+							</div>
+						</SwiperSlide>
+					);
+				})}
+			</Swiper>
 		</section>
 	);
 }
