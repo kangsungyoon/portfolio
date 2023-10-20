@@ -16,7 +16,6 @@ import menuReducer from './redux/menuSlice';
 
 const store = configureStore({
 	reducer: {
-		flickr: flickrReducer,
 		modal: modalReducer,
 		menu: menuReducer,
 	},
