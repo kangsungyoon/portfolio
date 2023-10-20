@@ -1,5 +1,10 @@
 //해당 컴포넌트에 대해 설명, 이슈사항은 ?
 
+// 매뉴 빠르게 이동시 에러가 뜨는 경우
+// 원인 : 특정 컴포넌트에 시간이 오래 걸리는 연산작업후 그 결과물을 state에 미저 담기도 전에 컴포넌트가 언마운트 되는 경우 (메모리 누수)
+// 해결방법 : 특정 State값이 true일때에만 state에 무거운 값이 담기도록 처리해주고 컴포넌트 unount시에 해당값을 false변경
+// 컴포넌트 언마운트 될떄쯤 state에 담길 값이 즌비되지 않으면 state에 값 담기는걸 무시
+
 import Layout from '../../common/layout/Layout';
 import Modal from '../../common/modal/Modal';
 import './Gallery.scss';

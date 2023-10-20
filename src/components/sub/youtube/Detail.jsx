@@ -23,12 +23,10 @@ function Detail() {
 	return (
 		<Layout title={'Detail'}>
 			<div className='vidBox'>
-				<iframe
-					src={`https://www.youtube.com/embed/${Data?.resourceId.videoId}`}
-					title='youtube'
-				></iframe>
-				<h2>{Data?.title}</h2>
-				<p>{Data?.description}</p>
+				<iframe src={`https://www.youtube.com/embed/${Data?.resourceId.videoId}`} title='youtube'>
+					<h2>{Data?.title}</h2>
+					<p>{Data?.description}</p>
+				</iframe>
 			</div>
 		</Layout>
 	);
