@@ -8,9 +8,10 @@ function Pics() {
 	const handleScroll = () => {
 		const pos = frame.current.offsetTop;
 		let scroll = window.scrollY;
+		//해당 스크롤값이 Pics 영역에 도달했을때 0으로 보정해놓은 값
 		let scroll2 = scroll - pos;
-
-		//frame.current.style.height = window.innerWidth * 4 + 'px';
+		console.log('scroll', scroll);
+		console.log('scoll2', scroll2);
 
 		//가로 스크롤 wrapping 섹션 안에 들어왔을때
 		if (scroll >= pos && scroll < pos + frame.current.clientHeight - window.innerWidth) {
@@ -41,6 +42,11 @@ function Pics() {
 		// };
 	}, []);
 	return (
+		//섹션의 높이값은 자식 요소의 4개 div요소 넓이값을 합친 총합의 크기만큼 높이값을 확보해야됨 (그 크기 만큼 Pics영역안에서 스크롤 이벤트를 발생시켜야 하기 때문)
+
+		//스크롤이 해당 Pics영역에 도달하게 되면 Pics안쪽의 article 프레임을 position: absolute에서 position: fixed로 속성을 변경
+		//article브라우저단에 세로 0px 위치로 고정이 되면서 마치 가로로 스크롤이 움직이는 것 같은 효과 구현
+		//Pics영역을 스크롤이 벗어나면 다시 absolute속성으로 변경해서 다시 위쪽으로 움직이도록 배치
 		<section className='myScroll pics' ref={frame}>
 			<article ref={box}>
 				<div>
