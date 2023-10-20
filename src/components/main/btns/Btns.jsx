@@ -21,6 +21,7 @@ function Btns() {
 	//브라우저 리사이즈시 현재 세로 스크롤값을 갱신하는 함수
 	const modifyPos = () => {
 		let activeIndex = 0;
+		if (!refBtns.current) return;
 		const lis = refBtns.current.querySelectorAll('li');
 		lis.forEach((li, idx) => {
 			li.classList.contains('on') && (activeIndex = idx);
