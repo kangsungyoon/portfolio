@@ -1,6 +1,7 @@
+import { useDebounce } from '../../../hooks/useDebounce';
 import Layout from '../../common/layout/Layout';
 import './Members.scss';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function Members() {
 	const initVal = {
@@ -18,6 +19,8 @@ export default function Members() {
 	const refSelGroup = useRef(null);
 	const [Val, setVal] = useState(initVal);
 	const [Errs, setErrs] = useState({});
+
+	const DebouncedVal = useDebounce(Val);
 
 	const resetForm = (e) => {
 		e.preventDefault();
@@ -48,9 +51,9 @@ export default function Members() {
 	};
 
 	const check = (value) => {
-		const num = /[0-9]/; //0-9까지의 모든 값을 정규표현식으로 범위지정
-		const txt = /[a-zA-Z]/; //대소문자 구분없이 모든 문자 범위지정
-		const spc = /[!@#$%^*()_]/; //모든 특수문자 지정
+		const num = /[0-9]/;
+		const txt = /[a-zA-Z]/;
+		const spc = /[!@#$%^*()_]/;
 		const errs = {};
 
 		if (value.userid.length < 5) {
@@ -117,6 +120,15 @@ export default function Members() {
 			setErrs(check(Val));
 		}
 	};
+
+	const showCheck = () => {
+		setErrs(check(DebouncedVal));
+	};
+
+	useEffect(() => {
+		console.log('Val state값 변경에 의해서 showCheck함수 호출');
+		showCheck();
+	}, [DebouncedVal]);
 
 	return (
 		<Layout title={'Members'}>
@@ -280,8 +292,10 @@ export default function Members() {
 /*
 	react-hook-form을 쓰지 않고 직접 기능을 만들었냐?
 	-- 라이브러리는 언제든지 연결할 수 있는건데, 아직 배우는 입장이기 때문에 부족하나마 어떤 인증로직이 처리되는지 직접 만들어 보고 싶었다.
+
 	그래서 checkbox, radio, selector, textarea 같이 필수입력사항이 아닌 요소도 직접 인증구현을 해봤다.
 	인증처리 하면서 제일 힘들었던 부분은 비밀번호, 이메일 인증 구현이 힘들었다
+
 	구글링을 해보니 정규표현식의 예시코드가 많이 있었지만 아직 정규표현식을 제대로 공부한것이 아니라 모르는 상태에서 붙여넣기 식으로 구현하기는 싫어서 
 	내가 알고 있는 문자열 관련 메서드를 최대한 활용해서 구현해봤다
 */
