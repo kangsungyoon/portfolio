@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import './Detail.scss';
 
 function Detail() {
-	//url로 전단될 parameter값을 비구조화할당으로 받을 수 있음
 	const { id } = useParams();
 	const [Data, setData] = useState(null);
 
@@ -19,14 +18,17 @@ function Detail() {
 				console.log(json.items[0].snippet);
 				setData(json.items[0].snippet);
 			});
-	}, []);
+	}, [id]);
+
 	return (
 		<Layout title={'Detail'}>
+			<h2>{Data?.title}</h2>
+			<p>{Data?.description}</p>
 			<div className='vidBox'>
-				<iframe src={`https://www.youtube.com/embed/${Data?.resourceId.videoId}`} title='youtube'>
-					<h2>{Data?.title}</h2>
-					<p>{Data?.description}</p>
-				</iframe>
+				<iframe
+					src={`https://www.youtube.com/embed/${Data?.resourceId.videoId}`}
+					title='youtube'
+				></iframe>
 			</div>
 		</Layout>
 	);
