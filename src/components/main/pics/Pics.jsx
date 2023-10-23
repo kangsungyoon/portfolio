@@ -1,6 +1,6 @@
 import { useDebounce } from '../../../hooks/useDebounce';
 import Layout from '../../common/layout/Layout';
-import './Members.scss';
+import './Pics.scss';
 import { useState, useRef, useEffect, memo } from 'react';
 
 //해당 컴포넌트에 메모리 누수 콘솔오류가 뜨는 이유 (memory leak);

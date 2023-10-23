@@ -49,6 +49,7 @@ function Btns() {
 	const throttledGetPos = useThrottle(getPos);
 
 	useEffect(() => {
+		console.log('repeat');
 		modifyPos();
 		getPos();
 		window.addEventListener('resize', throttledGetPos);
@@ -63,7 +64,7 @@ function Btns() {
 			//해당 컴포넌트 언마운트시 무조건 스크롤 y축을 0으로 이동
 			window.scrollTo(0, 0);
 		};
-	}, []);
+	}, [throttledActivation, throttledGetPos]);
 
 	return (
 		<ul className='scroll_navi' ref={refBtns}>
