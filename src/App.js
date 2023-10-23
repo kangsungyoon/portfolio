@@ -11,17 +11,20 @@ import Detail from './components/sub/youtube/Detail';
 import Community from './components/sub/community/Community';
 import Main from './components/main/mainWrap/Main';
 import { useMedia } from './hooks/useMedia';
+
 import Menu from './components/common/menu/Menu';
 import Footer from './components/common/footer/Footer';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { useGlobalData } from './hooks/useGlobalContext';
 
 function App() {
 	const queryClient = new QueryClient();
+	const { Theme } = useGlobalData();
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<main className={useMedia()}>
+			<main className={`${useMedia()} ${Theme ? 'dark' : 'light'}`}>
 				<Switch>
 					<Route exact path='/'>
 						<Header isMain={true} />
