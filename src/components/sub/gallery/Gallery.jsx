@@ -19,10 +19,9 @@ export default function Gallery() {
 	const refBtnSet = useRef(null);
 	const [ActiveURL, setActiveURL] = useState('');
 	const [IsUser, setIsUser] = useState(true);
-	const my_id = '199272355@N07';
+	const my_id = '164021883@N04';
 	const [Opt, setOpt] = useState({ type: 'user', id: my_id });
 	const { data: Pics, isSuccess } = useFlickrQuery(Opt);
-	console.log('isSuccess', isSuccess);
 
 	//submit이벤트 발생시 실행할 함수
 	const handleSubmit = (e) => {

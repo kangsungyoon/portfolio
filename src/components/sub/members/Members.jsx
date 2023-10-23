@@ -9,7 +9,6 @@ import { useState, useRef, useEffect } from 'react';
 //아직 state에 값이 담기지 않았는데 unmount된 경우이므로 뜨는 오류
 //컴포넌트 unmount시 값을 Mounted값을 false로 변경해주고 해당 값이 true일때에만 state변경처리
 export default function Members() {
-	//console.log('test');
 	const initVal = {
 		userid: '',
 		pwd1: '',
