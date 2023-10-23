@@ -1,7 +1,7 @@
 import Layout from '../../common/layout/Layout';
 import './Contact.scss';
 import emailjs from '@emailjs/browser';
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 export default function Contact() {
 	const form = useRef(null);
@@ -11,7 +11,9 @@ export default function Contact() {
 	const [Traffic, setTraffic] = useState(false);
 	const [Index, setIndex] = useState(0);
 	const [IsMap, setIsMap] = useState(true);
+
 	const { kakao } = window;
+
 	const info = useRef([
 		{
 			title: '삼성역 코엑스',
@@ -36,45 +38,39 @@ export default function Contact() {
 		},
 	]);
 
-	//지도위치를 중심으로 이동시키는 핸들러 함수 제작
-	const setCenter = useCallback(() => {
-		console.log('지도화면에서 마커 가운데 보정');
+	const marker = new kakao.maps.Marker({
+		position: info.current[Index].latlng,
+		image: new kakao.maps.MarkerImage(
+			info.current[Index].imgSrc,
+			info.current[Index].imgSize,
+			info.current[Index].imgPos
+		),
+	});
+
+	const setCenter = () => {
 		// 지도 중심을 이동 시킵니다
 		instance.current.setCenter(info.current[Index].latlng);
-	}, [Index]);
+	};
 
 	useEffect(() => {
-		//위의 정보값을 활용한 마커 객체 생성
-		const marker = new kakao.maps.Marker({
-			position: info.current[Index].latlng,
-			image: new kakao.maps.MarkerImage(
-				info.current[Index].imgSrc,
-				info.current[Index].imgSize,
-				info.current[Index].imgPos
-			),
-		});
-
-		//Index값이 변경될때마다 새로운 지도 레이어가 중첩되므로
-		//일단은 기존 map안의 모든 요소를 없애서 초기화
 		map.current.innerHTML = '';
-		//객체 정보를 활용한 지도 객체 생성
+
 		instance.current = new kakao.maps.Map(map.current, {
 			center: info.current[Index].latlng,
 			level: 1,
 		});
-		//마커 객체에 지도 객체 연결
 		marker.setMap(instance.current);
 
 		//지도 타입 변경 UI추가
 		const mapTypeControl = new kakao.maps.MapTypeControl();
 		instance.current.addControl(mapTypeControl, kakao.maps.ControlPosition.BOTTOMLEFT);
 
-		//지도 생성시 마커 고정적으로 적용되기 때문에 브라우저 리사이즈시 마커가 가운데 위치하지 않는 문제
-		//마커를 가운데 고정시키는 함수를 제작한뒤 윈도우객체 직접 resize이벤트 발생시마다 핸들러함수 호출해서 마커위치 보정
+		// 지도 생성시 마커 고정적으로 적용되기 때문에 브라우저 리사이즈시 마커가 가운데 위치하지 않는 문제
+		// 마커를 가운데 고정 시키는 함수를 제작한뒤 윈도우 객체 직접 resize이벤트 발생시마다 핸들러 함수 호출해서 마커위치 보정
 
-		//Contact페이지에만 동작되야 되는 핸들러함수를 최상위 객체인 window에 직접 연결했기 때문에
-		//라우터로 다른페이지이동하더라도 계속해서 setCenter호출되는 문제점 발생
-		//해결방법: Contact 컴포넌트가 언마운트시 강제로 윈도우객체에서 setCenter핸들러를 제거
+		// Contact페이지에만 동작되야 되는 핸들러 함수를 최상위 객체인 window에 직접 연결했기 때문에
+		// 라우터로 다른페이지 이동하더라도 계속해서 setCenter호출되는 문제 발생
+		// 해결방법 : Contact 컴포넌트가 언마운트시 강제로 윈도우 객체에서 setCenter핸들러를 제거
 		window.addEventListener('resize', setCenter);
 
 		//로드뷰 관련 코드
@@ -87,16 +83,16 @@ export default function Contact() {
 		);
 
 		return () => {
-			window.removeEventListener('resize', setCenter);
+			window.addEventListener('resize', setCenter);
 		};
-	}, [Index, kakao, setCenter]); //Index값이 변경될때마다 지도화면이 다시 갱신되어야 하므로 Index값을 의존성 배열에 등록
+	}, [Index]); //Index값이 변경될때마다 지도화면이 다시 갱신되어야 하므로 Index값을 의존성 배열에 등록
 
 	useEffect(() => {
 		//traffic 값이 바뀔때마다 실행될 구문
 		Traffic
 			? instance.current.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
 			: instance.current.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-	}, [Traffic, kakao]);
+	}, [Traffic]);
 
 	const resetForm = () => {
 		const nameForm = form.current.querySelector('.nameEl');
@@ -144,9 +140,29 @@ export default function Contact() {
 
 	return (
 		<Layout title={'Contact'}>
-			<div className='upperBox'>
+			<div className='haha'>
+				<img src='../img/rarara.jpg' alt=''></img>
+			</div>
+			<div className='hahaTxt'>
+				<h2>Contact</h2>
+			</div>
+
+			<div className='ft'>
+				<div className='lineT'>
+					<div className='loremTxt'>
+						<h2>Lorem, ipsum.</h2>
+					</div>
+					<div className='loremTT'>
+						<p>
+							Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, odio quaerat!
+							<br />
+							Impedit tempore modi sapiente consequuntur, <br /> repellat aliquam ullam sed mollitia
+							deleniti alias velit nemo ipsam <br /> quas voluptates fugiat cum?
+						</p>
+					</div>
+				</div>
+
 				<div id='mailBox'>
-					<h2>Send E-Mail</h2>
 					<form ref={form} onSubmit={sendEmail}>
 						<div className='upper'>
 							<span>
@@ -171,24 +187,40 @@ export default function Contact() {
 						</div>
 					</form>
 				</div>
-
-				<div id='etc'>
-					<h2>Information</h2>
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, id nesciunt? Dolores
-					architecto quas voluptate dolorem impedit ab dolore, itaque blanditiis iste esse delectus
-					libero ipsum repudiandae porro nulla fuga.
-				</div>
 			</div>
-
-			<div id='mapBox'>
-				<div className='btnSet'>
-					<button onClick={() => setTraffic(!Traffic)}>
-						{Traffic ? '교통정보 끄기' : '교통정보 켜기'}
-					</button>
-
-					<button onClick={setCenter}>지도 위치 초기화</button>
-					<button onClick={() => setIsMap(!IsMap)}>{IsMap ? '로드뷰보기' : '지도보기'}</button>
+			<section className='conBox'>
+				<div>
+					<h2 className='tt'>Lorem, ipsum dolor.</h2>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, <br />
+						adipisicing elit. Tempore fugit itaque, <br />
+						adipisci inventore soluta saepe.
+					</p>
+				</div>{' '}
+				<div>
+					<h2 className='tt'>Lorem, ipsum dolor.</h2>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, <br />
+						adipisicing elit. Tempore fugit itaque, <br />
+						adipisci inventore soluta saepe.
+					</p>
+				</div>{' '}
+				<div>
+					<h2 className='tt'>Lorem, ipsum dolor.</h2>
+					<p>
+						Lorem ipsum dolor sit amet consectetur, <br />
+						adipisicing elit. Tempore fugit itaque, <br />
+						adipisci inventore soluta saepe.
+					</p>
 				</div>
+			</section>
+			<div id='mapBox'>
+				<button onClick={() => setTraffic(!Traffic)}>
+					{Traffic ? '교통정보 끄기' : '교통정보 켜기'}
+				</button>
+
+				<button onClick={setCenter}>지도 위치 초기화</button>
+				<button onClick={() => setIsMap(!IsMap)}>{IsMap ? '로드뷰보기' : '지도보기'}</button>
 
 				<div className='container'>
 					<div className={`view ${IsMap ? '' : 'on'}`} ref={view}></div>
@@ -219,11 +251,8 @@ export default function Contact() {
 	해당 페이지의 이슈사항은
 	- kakao map api가 리액트버전의 사용구문이 없었기 일반 cdn방식으로 불러온 api를 리액트에 맞게 변환하는 작업이 힘들었다.
 	- cdn으로 받아서 kakao생성자함수를 컴포넌트 안쪽에서 불러와지지 않는 문제가 있어서 window객체로부터 직접 비구조화할당으로 뽑아와서 활용했다.
-
 	kakao생성자를 통해서 만들어진 지도 인스턴스값을 state에 담아서 각각의 이벤트에 연결했다.
 	작업을 하다보니 아무래도 리액트로 작업하는 프로젝트는 지점이 많은 대형프로젝트일것 같아서 지점 버튼 클릭시 다른 지도를 출력하도록 구현했는데 너무 코드가 지저분해져서 지도 정보값을 배열형태로 묶어서 추후 배열데이터가 변경이되면 데이터 기반으로 자동으로 새로운 지도 인스턴스 생성과 이벤트 연결까지 한번에 처리되도록 자동화시키는데 중점을 뒀다.
-
 	이슈사항 - 브라우저 리사이즈시 마커가 가운데 가지 않아서 브라우저 리사이즈 이벤트 발생할때마다 마커가 가운데 위치하는 함수를 재호출했다.
-
 	- window객체에 이벤트 연결하다보니 리사이즈 이벤트가 발생할 필요가 없는 다른 컴포넌트에서도 핸들러함수가 호출되는 문제점이 있어서 컴포넌트 언마운트시 윈도우객체에 이벤트핸들러 제거했다.
 */

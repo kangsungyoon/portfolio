@@ -3,6 +3,7 @@
 import Layout from '../../common/layout/Layout';
 import './Community.scss';
 import { useRef, useState, useEffect } from 'react';
+import { FaExclamationTriangle } from 'react-icons/fa';
 
 export default function Community() {
 	const dummyData = useRef([
@@ -125,6 +126,11 @@ export default function Community() {
 					<button onClick={resetForm}>cancel</button>
 					<button onClick={createPost}>write</button>
 				</nav>
+				<div className='tty'>
+					<FaExclamationTriangle className='bars' fontSize={22} color={'#333'} /> &nbsp; &nbsp; If
+					you make a post on the communilty bulletin board that does not meet its purpose, the post
+					may be deleted by the administrator.
+				</div>
 			</div>
 
 			<div className='showBox'>
