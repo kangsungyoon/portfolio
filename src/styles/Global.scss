@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap');
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	font-weight: normal;
+	font-family: 'Nanum Myeongjo';
 }
 ul,
 ol,
@@ -11,10 +15,26 @@ li {
 a {
 	text-decoration: none;
 	color: inherit;
+	font-weight: inherit;
 }
 
 body {
-	background: #eee;
+	width: 100%;
+	overflow-x: hidden;
+
+	main {
+		width: 100%;
+		background: var(--bg);
+		color: var(--color);
+	}
+	main.light {
+		background: var(--bg);
+		color: var(--color);
+	}
+	main.dark {
+		background: var(--darkBg);
+		color: var(--darkColor);
+	}
 }
 
 html {
@@ -23,18 +43,24 @@ html {
 	}
 	&::-webkit-scrollbar-thumb {
 		border-radius: 4px;
-		background: #333;
+		background: orangered;
 	}
 }
+
 table {
 	border-collapse: collapse;
 }
 fieldset {
 	border: none;
 }
-
 .h {
 	position: absolute;
 	top: -9999px;
 	opacity: 0;
+}
+
+.mobile {
+	* {
+		word-break: break-all;
+	}
 }
