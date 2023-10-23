@@ -33,10 +33,15 @@
 		.lineT {
 			width: 50%;
 			border-right: thick solid #000;
+			h2 {
+				margin-bottom: 20px;
+				font-size: 40px;
+			}
 
 			.loremTxt {
 				width: 100%;
 				margin-top: 100px;
+				margin-bottom: 30px;
 			}
 			.loremTT {
 				width: 100%;
@@ -138,6 +143,8 @@
 		}
 		.tt {
 			text-decoration: overline;
+			margin-bottom: 20px;
+			font-size: 30px;
 		}
 	}
 

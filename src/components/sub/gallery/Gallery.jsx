@@ -18,7 +18,7 @@ export default function Gallery() {
 	const refBtnSet = useRef(null);
 	const [ActiveURL, setActiveURL] = useState('');
 	const [IsUser, setIsUser] = useState(true);
-	const my_id = '164021883@N04';
+	const my_id = '199272355@N07';
 	const [Opt, setOpt] = useState({ type: 'user', id: my_id });
 	const { data: Pics, isSuccess } = useFlickrQuery(Opt);
 
@@ -78,13 +78,13 @@ export default function Gallery() {
 						<button>검색</button>
 					</form>
 				</div>
-
 				<div className='btnSet' ref={refBtnSet}>
 					<button className='on' onClick={handleClickMy}>
 						My Gallery
 					</button>
-
-					<button onClick={handleClickInterest}>Interest Gallery</button>
+					<button className='pss' onClick={handleClickInterest}>
+						Interest Gallery
+					</button>
 				</div>
 
 				<div className='picFrame'>

@@ -1,18 +1,20 @@
 .Gallery {
-	.sbbs {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		text-align: right;
-	}
 	.searchBox {
-		width: 30%;
+		width: 100%;
+		display: block;
+		display: flex;
 	}
 	.btnSet {
-		width: 20%;
+		width: 100%;
 		margin-bottom: 30px;
-		text-align: right;
+		margin-top: 20px;
+		display: flex;
+
+		.pss {
+			margin-left: 10px;
+		}
 	}
+
 	.loading {
 		position: fixed;
 		top: 50%;
